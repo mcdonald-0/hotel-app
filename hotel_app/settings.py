@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Project apps
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -73,12 +76,23 @@ WSGI_APPLICATION = 'hotel_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
+# Postgres database configuration
+DB_NAME = 'hotel_app'
+DB_USER = 'django'
+DB_PASSWORD = 'password'
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default': {    
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': DB_NAME,
+    'USER': DB_USER,
+    'PASSWORD': DB_PASSWORD,
+    'HOST': 'localhost',
+    'PORT': '5432',
     }
+
 }
+
 
 
 # Password validation
