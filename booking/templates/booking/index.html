@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+	<h1>This is the booking section of the hotel, these are the available list of hotels</h1>
+	{% for hotel in hotels %}
+		<h3>{{hotel.name}}</h3>
+	{% endfor %}
+{% endblock %}
