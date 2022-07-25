@@ -7,7 +7,7 @@ from helpers.models import TrackingModel
 
 class RoomBooking(TrackingModel):
 	hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-	guest = models.OneToOneField(User, on_delete=models.CASCADE)
+	guest = models.ForeignKey(User, on_delete=models.CASCADE)
 	is_booked = models.BooleanField(default=False)
 
 

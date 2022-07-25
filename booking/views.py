@@ -30,14 +30,26 @@ def book_a_room(request, *args, **kwargs):
 	if request.method == 'POST':
 		form = BookingARoomForm(request.POST)
 		if form.is_valid():
-			RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
 
-		return HttpResponse('<h1>You just booked a hotel</h1>')
+			# The entire logic here checks if the room is not maximally booked, if it is, a hotel is not booked. Else a hotel is booked and the number of rooms is incremented by one.
+			if hotel.number_of_booked_rooms < hotel.number_of_rooms:
+				hotel.no_rooms_available = False
+				if hotel.no_rooms_available == False:
+					hotel.number_of_booked_rooms += 1
+					hotel.save()
+					RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
+				return HttpResponse('<h1>You just booked a hotel</h1>')
 
+			else:
+				hotel.no_rooms_available = True
+				hotel.number_of_booked_rooms = hotel.number_of_rooms
+				hotel.save()
+				if hotel.no_rooms_available == True:
+					return HttpResponse('<h1>This hotel is maximally booked...</h1>')
 
 	context = {
 		'room': hotel,
-		'form': form
+		'form': form,
 	}
 
 	return render(request, 'booking/booking.html', context)

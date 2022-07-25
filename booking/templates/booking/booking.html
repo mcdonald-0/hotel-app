@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<form class="POST">
+	<form method="POST">
 		<h1>This is the reservation to book a hotel</h1>
 		{% csrf_token %}
 		{{ form.as_p }}
