@@ -14,6 +14,7 @@ class Location(TrackingModel):
 
 class Hotel(TrackingModel):
     name = models.CharField(max_length=120, null=True)
+    slug = models.SlugField(null=True)
     location = models.ForeignKey(Location, null=True, on_delete=models.SET_NULL)
     hotel_location = models.CharField(max_length=3000, null=True)
     phone = models.IntegerField(null=True)
@@ -24,11 +25,10 @@ class Hotel(TrackingModel):
     no_rooms_available = models.BooleanField(default=False)
     date_of_hotel_profile_update = models.DateTimeField(auto_now_add=True, null=True)
 
-    slug = models.SlugField(null=True)
+    
 
-
-    # def get_absolute_url(self):
-    #     return reverse('questions:question', kwargs={'slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('booking:book', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs): 
         if not self.slug:

@@ -10,5 +10,8 @@ class RoomBooking(TrackingModel):
 	guest = models.ForeignKey(User, on_delete=models.CASCADE)
 	is_booked = models.BooleanField(default=False)
 
+	def __str__(self):
+		return f'{ self.guest } booked a room at { self.hotel }'
+
 
 # I need to put a room number when booking a hotel maybe later along the code...

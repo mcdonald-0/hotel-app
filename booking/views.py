@@ -10,7 +10,6 @@ from registration.models import Hotel
 
 
 
-
 def index(request, *args, **kwargs):
 	hotel_list = Hotel.objects.all()
 
@@ -48,7 +47,7 @@ def book_a_room(request, *args, **kwargs):
 					return HttpResponse('<h1>This hotel is maximally booked...</h1>')
 
 	context = {
-		'room': hotel,
+		'hotel': hotel,
 		'form': form,
 	}
 

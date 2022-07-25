@@ -2,7 +2,7 @@
 
 {% block content %}
 	<form method="POST">
-		<h1>This is the reservation to book a hotel</h1>
+		<h1>This is the reservation to book a room at {{ hotel.name }}</h1>
 		{% csrf_token %}
 		{{ form.as_p }}
 		<button type="submit">Book</button>
