@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
-{% load i18n %}
+{% load static %}
+
 
 {% block content %}
 	<form action="{% url 'booking:book_a_room' hotel.slug %}" method="POST">

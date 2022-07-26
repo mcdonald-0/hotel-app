@@ -9,8 +9,8 @@ class RoomBooking(TrackingModel):
 	hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
 	guest = models.ForeignKey(User, on_delete=models.CASCADE)
 	date_booked = models.DateTimeField(auto_now=True, null=True)
-	date_checked_out = models.DateField(null=True)
-	is_booked = models.BooleanField(default=False)
+	date_to_check_in = models.DateField(null=True)
+	date_to_check_out = models.DateField(null=True)
 
 	def __str__(self):
 		return f'{ self.guest } booked a room at { self.hotel }'
