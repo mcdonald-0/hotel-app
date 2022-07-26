@@ -20,8 +20,8 @@ class Hotel(TrackingModel):
     phone = models.IntegerField(null=True)
     email = models.EmailField(null=True)
     number_of_rooms = models.IntegerField(null=True)
-    number_of_booked_rooms = models.IntegerField(null=True)
-    rating = models.IntegerField(null=True)
+    number_of_booked_rooms = models.IntegerField(null=True, default=0)
+    rating = models.IntegerField(null=True, default=0)
     no_rooms_available = models.BooleanField(default=False)
     date_of_hotel_profile_update = models.DateTimeField(auto_now_add=True, null=True)
 

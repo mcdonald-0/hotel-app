@@ -8,6 +8,8 @@ from helpers.models import TrackingModel
 class RoomBooking(TrackingModel):
 	hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
 	guest = models.ForeignKey(User, on_delete=models.CASCADE)
+	date_booked = models.DateTimeField(auto_now=True, null=True)
+	date_checked_out = models.DateField(null=True)
 	is_booked = models.BooleanField(default=False)
 
 	def __str__(self):

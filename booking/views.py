@@ -30,7 +30,7 @@ def book_a_room(request, *args, **kwargs):
 		form = BookingARoomForm(request.POST)
 		if form.is_valid():
 
-			# The entire logic here checks if the room is not maximally booked, if it is, a hotel is not booked. Else a hotel is booked and the number of rooms is incremented by one.
+			# The entire logic here checks if the hotel has available rooms, if it does not, a hotel is not booked. if it does a hotel is booked and the number of rooms is incremented by one.
 			if hotel.number_of_booked_rooms < hotel.number_of_rooms:
 				hotel.no_rooms_available = False
 				if hotel.no_rooms_available == False:
@@ -52,4 +52,8 @@ def book_a_room(request, *args, **kwargs):
 	}
 
 	return render(request, 'booking/booking.html', context)
+
+
+# def checkout(request, *args, **kwargs):
+	
 

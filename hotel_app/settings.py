@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     # Project apps
     'booking',
     'registration',
+
+    # Third party apps
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
