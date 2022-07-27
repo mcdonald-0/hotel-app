@@ -2,27 +2,21 @@ from django.shortcuts import render
 from django.template.defaultfilters import slugify
 from django.http import HttpResponse
 
-from booking.models import RoomBooking
+from booking.models import RoomBooking, Room
 from booking.forms import BookingARoomForm
-
 
 from registration.models import Hotel
 
-
-
-def index(request, *args, **kwargs):
-	hotel_list = Hotel.objects.all()
-
-	context = {
-		'hotels': hotel_list,
-	}
-
-	return render(request, 'booking/index.html', context)
+ROOMS = 0
 
 
 def book_a_room(request, *args, **kwargs):
 	hotel_slug = kwargs['slug']
 	hotel = Hotel.objects.get(slug=hotel_slug)
+
+	global ROOMS
+
+	ROOMS = hotel.number_of_rooms
 
 	form = BookingARoomForm()
 
@@ -36,7 +30,9 @@ def book_a_room(request, *args, **kwargs):
 				if hotel.no_rooms_available == False:
 					hotel.number_of_booked_rooms += 1
 					hotel.save()
-					RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
+					room_booking = RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
+					Room.objects.create(hotel=hotel, room_information=room_booking, is_booked=True, checked_in=True, **form.cleaned_data)
+
 				return HttpResponse('<h1>You just booked a hotel</h1>')
 
 			else:
@@ -46,13 +42,17 @@ def book_a_room(request, *args, **kwargs):
 				if hotel.no_rooms_available == True:
 					return HttpResponse('<h1>This hotel is maximally booked...</h1>')
 
+		print(ROOMS)
+
 	context = {
 		'hotel': hotel,
 		'form': form,
+		'rooms_available': hotel.number_of_rooms,
 	}
 
 	return render(request, 'booking/booking.html', context)
 
+print(ROOMS)
 
 # def checkout(request, *args, **kwargs):
 	

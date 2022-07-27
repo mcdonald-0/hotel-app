@@ -3,5 +3,5 @@ from registration.views import *
 
 app_name = 'registration'
 urlpatterns = [
-    path('', index, name="index"),
+    path('', homepage, name="homepage"),
 ]

@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-# Create your views here.
-def index(request, *args, **kwargs):
-	context = {}
-	return HttpResponse('<h1>This is the index page</h1>')
+from registration.models import Hotel
+
+
+def homepage(request, *args, **kwargs):
+	hotel_list = Hotel.objects.all()
+
+	context = {
+		'hotels': hotel_list,
+	}
+
+	return render(request, 'registration/homepage.html', context)
