@@ -5,30 +5,28 @@ from django.urls import reverse
 from django.template.defaultfilters import slugify
 
 
-
 class Location(TrackingModel):
     name = models.CharField(max_length=120)
     
     def __str__(self):
         return f'{ self.name }'
 
-class Hotel(TrackingModel):
-    name = models.CharField(max_length=120, null=True)
-    slug = models.SlugField(null=True)
-    location = models.ForeignKey(Location, null=True, on_delete=models.SET_NULL)
-    hotel_location = models.CharField(max_length=3000, null=True)
-    phone = models.IntegerField(null=True)
-    email = models.EmailField(null=True)
-    number_of_rooms = models.IntegerField(null=True)
-    number_of_booked_rooms = models.IntegerField(null=True, default=0)
-    rating = models.IntegerField(null=True, default=0)
-    no_rooms_available = models.BooleanField(default=False)
-    date_of_hotel_profile_update = models.DateTimeField(auto_now_add=True, null=True)
 
-    
+class Hotel(TrackingModel):
+    name = models.CharField(max_length=120)
+    slug = models.SlugField()
+    location = models.ForeignKey(Location, null=True, on_delete=models.SET_NULL)
+    hotel_location = models.CharField(max_length=3000)
+    phone = models.IntegerField()
+    email = models.EmailField()
+    number_of_rooms = models.IntegerField()
+    number_of_booked_rooms = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
+    no_rooms_available = models.BooleanField(default=False)
+    date_of_hotel_profile_update = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return reverse('booking:book', kwargs={'slug': self.slug})
+        return reverse('booking:book_a_room', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs): 
         if not self.slug:
