@@ -15,7 +15,7 @@ class RoomBooking(TrackingModel):
 	date_to_check_out = models.DateField()
 
 	def __str__(self):
-		return f'{ self.guest } booked a room at { self.hotel }'
+		return f'Booking of room { self.room_booked.room_number } at { self.hotel }'
 
 
 class Room(TrackingModel):
@@ -26,6 +26,6 @@ class Room(TrackingModel):
 	checked_in = models.BooleanField(default=False)
 
 	def __str__(self):
-		return f'Room { self.room_number } of { self.hotel }'
+		return f'Room { self.room_number } at { self.hotel }'
 
 # I need to put a room number when booking a hotel maybe later along the code...

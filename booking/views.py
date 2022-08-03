@@ -32,8 +32,10 @@ def book_a_room(request, *args, **kwargs):
 				if hotel.no_rooms_available == False:
 					hotel.number_of_booked_rooms += 1
 					hotel.save()
+					# This creates a room booking object then get the room a user books and updates the room_information
 					room_booking = RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
-					# Room.objects.create(hotel=hotel, room_information=room_booking, is_booked=True, checked_in=True,)
+					room_number = room_booking.room_booked.room_number
+					Room.objects.filter(room_number=room_number, hotel=hotel).update(room_information=room_booking, is_booked=True)
 
 				return HttpResponse('<h1>You just booked a hotel</h1>')
 
@@ -47,7 +49,6 @@ def book_a_room(request, *args, **kwargs):
 	context = {
 		'hotel': hotel,
 		'form': form,
-		'rooms_available': hotel.number_of_rooms,
 	}
 
 	return render(request, 'booking/booking.html', context)
