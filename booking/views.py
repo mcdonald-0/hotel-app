@@ -12,8 +12,6 @@ def book_a_room(request, *args, **kwargs):
 	hotel_slug = kwargs['slug']
 	hotel = Hotel.objects.get(slug=hotel_slug)
 
-	print(kwargs.get('slug'))
-
 	# This logic makes sure the number of rooms the hotel has is equal to the number of rooms available in the dropdown
 	if hotel.number_of_rooms == Room.objects.filter(hotel__name=hotel.name).count():
 		pass
