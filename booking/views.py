@@ -12,6 +12,8 @@ def book_a_room(request, *args, **kwargs):
 	hotel_slug = kwargs['slug']
 	hotel = Hotel.objects.get(slug=hotel_slug)
 
+	print(kwargs.get('slug'))
+
 	# This logic makes sure the number of rooms the hotel has is equal to the number of rooms available in the dropdown
 	if hotel.number_of_rooms == Room.objects.filter(hotel__name=hotel.name).count():
 		pass
@@ -19,10 +21,10 @@ def book_a_room(request, *args, **kwargs):
 		for i in range(hotel.number_of_rooms):
 			Room.objects.get_or_create(hotel=hotel, room_number=i+1)
 
-	form = BookingARoomForm()
+	form = BookingARoomForm(slug=hotel_slug)
 
 	if request.method == 'POST':
-		form = BookingARoomForm(request.POST)
+		form = BookingARoomForm(request.POST, slug=hotel_slug)
 		if form.is_valid():
 
 			# The entire logic here checks if the hotel has available rooms, if it does not, a hotel is not booked.

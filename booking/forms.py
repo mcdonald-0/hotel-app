@@ -12,7 +12,14 @@ tomorrow = today + timedelta(days=1)
 class BookingARoomForm(ModelForm):
 	date_to_check_in = forms.DateField(widget=forms.TextInput(attrs={'min': today, 'value': today, 'type': 'date'}), required=True)
 	date_to_check_out = forms.DateField(widget=forms.TextInput(attrs={'min': today, 'value': tomorrow, 'type': 'date'}), required=True)
-	room_booked = forms.ModelChoiceField(queryset=Room.objects.all(), empty_label="Select the room you want to book")
+	room_booked = forms.ModelChoiceField(queryset=Room.objects.none(), empty_label="Select the room you want to book")
+
+	# This down here helps to filter the room objects by the hotel.
+	# That is when you want to book a room, it would only show the number of rooms in the hotel rather than all the hotel object
+	def __init__(self, *args, **kwargs):
+		slug = kwargs.pop('slug')
+		super(BookingARoomForm, self).__init__(*args, **kwargs)
+		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=slug)
 
 	class Meta:
 		model = RoomBooking
