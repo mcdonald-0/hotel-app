@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.defaultfilters import slugify
 from django.http import HttpResponse
 
@@ -33,11 +33,12 @@ def book_a_room(request, *args, **kwargs):
 					hotel.number_of_booked_rooms += 1
 					hotel.save()
 					# This creates a room booking object then get the room a user books and updates the room_information
-					room_booking = RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
+					RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data).save()
+					room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user, **form.cleaned_data)
 					room_number = room_booking.room_booked.room_number
 					Room.objects.filter(room_number=room_number, hotel=hotel).update(room_information=room_booking, is_booked=True)
 
-				return HttpResponse('<h1>You just booked a hotel</h1>')
+				return redirect('booking:check_in', slug=hotel_slug)
 
 			else:
 				hotel.no_rooms_available = True
@@ -54,6 +55,16 @@ def book_a_room(request, *args, **kwargs):
 	return render(request, 'booking/booking.html', context)
 
 
-# def checkout(request, *args, **kwargs):
+def check_in(request, *args, **kwargs):
+	hotel_slug = kwargs['slug']
+	hotel = Hotel.objects.get(slug=hotel_slug)
+
+
+
+	context = {
+		'hotel': hotel,
+	}
+
+	return render(request, 'booking/check_in.html', context)
 	
 

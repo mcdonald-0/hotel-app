@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
 
-{% load static %}
-
-
 {% block content %}
 	<form action="{% url 'booking:book_a_room' hotel.slug %}" method="POST">
 		<h1>This is the reservation to book a room at {{ hotel.name }}</h1>

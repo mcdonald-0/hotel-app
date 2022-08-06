@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Check into {{ hotel.name }}
+{% endblock %}
+
+{% block content %}
+	<h1>Pick a payment method</h1>
+    <select>
+        <option value="paypal">Paypal</option>
+        <option value="visa">Visa</option>
+        <option value="master-card">Master card</option>
+    </select>
+{% endblock %}

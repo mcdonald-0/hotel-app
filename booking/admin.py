@@ -4,7 +4,7 @@ from booking.models import *
 
 class RoomAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('Important information', {'fields': ['hotel', 'room_number', 'room_information']}),
+        ('Important information', {'fields': ['hotel', 'slug',  'room_number', 'room_information']}),
         ('Room status', {'fields': ['is_booked', 'checked_in']}),
     ]
     list_display = ('__str__', 'is_booked', 'checked_in')

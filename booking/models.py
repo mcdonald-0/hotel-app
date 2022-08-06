@@ -1,6 +1,8 @@
 from django.db import models 
 from django.contrib.auth.models import User
 
+from django.template.defaultfilters import slugify
+
 from registration.models import Hotel
 
 from helpers.models import TrackingModel
@@ -20,6 +22,7 @@ class RoomBooking(TrackingModel):
 
 class Room(TrackingModel):
 	hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+	slug = models.SlugField()
 	room_information = models.ForeignKey(RoomBooking, on_delete=models.CASCADE, null=True)
 	room_number = models.IntegerField()
 	is_booked = models.BooleanField(default=False)
@@ -27,5 +30,10 @@ class Room(TrackingModel):
 
 	def __str__(self):
 		return f'Room { self.room_number } at { self.hotel }'
+
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			self.slug = slugify(f'Room { self.room_number }')
+		return super().save(*args, **kwargs)
 
 # I need to put a room number when booking a hotel maybe later along the code...
