@@ -33,12 +33,13 @@ def book_a_room(request, *args, **kwargs):
 					hotel.number_of_booked_rooms += 1
 					hotel.save()
 					# This creates a room booking object then get the room a user books and updates the room_information
-					RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data).save()
+					RoomBooking.objects.create(hotel=hotel, guest=request.user, **form.cleaned_data)
 					room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user, **form.cleaned_data)
 					room_number = room_booking.room_booked.room_number
 					Room.objects.filter(room_number=room_number, hotel=hotel).update(room_information=room_booking, is_booked=True)
 
-				return redirect('booking:check_in', slug=hotel_slug)
+					room = Room.objects.get(room_number=room_number, hotel__name=hotel)
+					return redirect('booking:check_in', hotel_slug=hotel_slug, room_slug=room.slug)
 
 			else:
 				hotel.no_rooms_available = True
@@ -56,10 +57,10 @@ def book_a_room(request, *args, **kwargs):
 
 
 def check_in(request, *args, **kwargs):
-	hotel_slug = kwargs['slug']
+	hotel_slug = kwargs['hotel_slug']
 	hotel = Hotel.objects.get(slug=hotel_slug)
 
-
+	print(kwargs)
 
 	context = {
 		'hotel': hotel,

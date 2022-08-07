@@ -22,7 +22,7 @@ class BookingARoomForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		slug = kwargs.pop('slug')
 		super(BookingARoomForm, self).__init__(*args, **kwargs)
-		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=slug)
+		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=slug, is_booked=False)
 
 	class Meta:
 		model = RoomBooking
