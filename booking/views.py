@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -31,6 +33,12 @@ def book_a_room(request, *args, **kwargs):
 	if request.method == 'POST':
 		form = BookingARoomForm(request.POST, slug=hotel_slug)
 		if form.is_valid():
+
+			# This makes sure that the date a user wants to check in comes before the date a user wants to check out
+			if form.cleaned_data['date_to_check_out'] - form.cleaned_data['date_to_check_in'] < timedelta(days=1):
+				messages.error(request, 'Improperly configured dates')
+				messages.info(request, 'Check the date you want to check in, make sure it is before the date you want to check out')
+				return redirect('booking:book_a_room', slug=hotel_slug)
 
 			# The entire logic here checks if the hotel has available rooms, if it does not, a hotel is not booked. if it does a hotel is booked and the number of rooms is incremented by one.
 			if hotel.number_of_booked_rooms < hotel.number_of_rooms:
@@ -98,4 +106,4 @@ def check_out(request, *args, **kwargs):
 
 	return HttpResponse('<h1>Thank you for lodging with us... come back again</h1>')
 
-
+# Todo: I need to create a view that shows all the rooms i have booked and i have checked  into.

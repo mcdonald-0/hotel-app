@@ -5,14 +5,21 @@
 {% endblock %}
 
 {% block content %}
+	<h1 class="mx-4">This is the reservation to book a room at {{ hotel.name }}</h1>
 	{% for message in messages %}
-        <div class="alert alert-danger alert-dismissible m-4">
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-              <strong>An error occurred:</strong> {{ message }}
-        </div>
-    {% endfor %}
+		{% if message.tags == 'error' %}
+			<div class="alert alert-danger alert-dismissible mx-4">
+				  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				  <strong>An error occurred:</strong> {{ message }}
+			</div>
+		{% elif message.tags == 'info' %}
+			<div class="alert alert-info alert-dismissible mx-4">
+				  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				  <strong>Suggestion:</strong> {{ message }}
+			</div>
+		{% endif %}
+	{% endfor %}
 	<form class="mx-4" action="{% url 'booking:book_a_room' hotel.slug %}" method="POST">
-		<h1>This is the reservation to book a room at {{ hotel.name }}</h1>
 		{% csrf_token %}
 		{{ form.as_p }}
 		<button class="btn btn-success" type="submit">Book</button>
