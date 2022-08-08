@@ -22,10 +22,16 @@ class BookingARoomForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		slug = kwargs.pop('slug')
 		super(BookingARoomForm, self).__init__(*args, **kwargs)
-		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=slug, is_booked=False)
+		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=slug, is_booked=False, checked_in=False)
 
 	class Meta:
 		model = RoomBooking
 		fields = ['date_to_check_in', 'date_to_check_out', 'room_booked']
 
 
+class CheckInARoomForm(ModelForm):
+	checked_in = forms.BooleanField(widget=forms.CheckboxInput())
+
+	class Meta:
+		model = Room
+		fields = ['checked_in']

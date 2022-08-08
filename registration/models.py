@@ -35,3 +35,5 @@ class Hotel(TrackingModel):
 
     def __str__(self):
         return f'{ self.name }'
+
+# Todo: I need to add a range value in the number of rooms so it does not exceeds 50 and the number of rooms is not lower than 5

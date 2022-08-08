@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 
+{% block title %}
+	Book a room | {{ hotel.name }}
+{% endblock %}
+
 {% block content %}
-	<form action="{% url 'booking:book_a_room' hotel.slug %}" method="POST">
+	{% for message in messages %}
+        <div class="alert alert-danger alert-dismissible m-4">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <strong>An error occurred:</strong> {{ message }}
+        </div>
+    {% endfor %}
+	<form class="mx-4" action="{% url 'booking:book_a_room' hotel.slug %}" method="POST">
 		<h1>This is the reservation to book a room at {{ hotel.name }}</h1>
 		{% csrf_token %}
 		{{ form.as_p }}
-		<button type="submit">Book</button>
+		<button class="btn btn-success" type="submit">Book</button>
 	</form>
 {% endblock %}
