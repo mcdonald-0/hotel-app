@@ -1,9 +1,9 @@
 from django.db import models 
-from django.contrib.auth.models import User
 
 from django.template.defaultfilters import slugify
 
 from registration.models import Hotel
+from authentication.models import Guest, User
 
 from helpers.models import TrackingModel
 
@@ -35,5 +35,3 @@ class Room(TrackingModel):
 		if not self.slug:
 			self.slug = slugify(f'Room { self.room_number }')
 		return super().save(*args, **kwargs)
-
-# I need to put a room number when booking a hotel maybe later along the code...

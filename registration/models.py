@@ -7,9 +7,9 @@ from django.template.defaultfilters import slugify
 
 class Location(TrackingModel):
     name = models.CharField(max_length=120)
-    
+
     def __str__(self):
-        return f'{ self.name }'
+        return f'{self.name}'
 
 
 class Hotel(TrackingModel):
@@ -28,12 +28,12 @@ class Hotel(TrackingModel):
     def get_absolute_url(self):
         return reverse('booking:book_a_room', kwargs={'slug': self.slug})
 
-    def save(self, *args, **kwargs): 
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{ self.name }'
+        return f'{self.name}'
 
 # Todo: I need to add a range value in the number of rooms so it does not exceeds 50 and the number of rooms is not lower than 5
