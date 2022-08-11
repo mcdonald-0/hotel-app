@@ -1,3 +1,5 @@
+from django.core.validators import RegexValidator
+
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 
@@ -11,7 +13,7 @@ from helpers.models import TrackingModel
 
 class AccountManager(BaseUserManager):
 
-    def create_user(self, username, email, password=None):
+    def create_user(self, email, username=None, password=None):
         if not email:
             raise ValueError('Users must have an email address!')
 
@@ -105,9 +107,18 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
         return True
 
 
+# (^[070]\d{8}$)|(^[080]\d{8}$)|(^[081]\d{8}$)|(^[090]\d{8}$)|(^[091]\d{8}$)|(^[\+]?[234]\d{10}$)
+
+
+phonenumber_regex = RegexValidator(regex=r'(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)', message="Phone number must be entered like this (09012345678) or (+2349012345678)")
+
 class Guest(TrackingModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    phone_number = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    email = models.EmailField(_('email address'), null=True, unique=True, error_messages={'unique': _("A user with this email already exists.")})
+    phone_number = models.CharField(validators=[phonenumber_regex], max_length=17)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150, blank=True, null=True)
-    next_of_kin_number = models.IntegerField(blank=True, null=True)
+    next_of_kin_number = models.CharField(validators=[phonenumber_regex], max_length=17, blank=True)
+
+    def __str__(self):
+        return f'{ self.first_name } { self.last_name }'

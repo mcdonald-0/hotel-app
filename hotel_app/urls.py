@@ -23,6 +23,8 @@ from django.views import i18n
 urlpatterns = [
     path('', include('registration.urls')),
     path('booking/', include('booking.urls')),
+    path('create/', include('authentication.urls')),
+
     path('admin/', admin.site.urls),
 
     path('jsi18n/', i18n.JavaScriptCatalog.as_view(), name='jsi18n'),

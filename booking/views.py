@@ -7,6 +7,9 @@ from django.shortcuts import render, redirect
 from booking.models import RoomBooking, Room
 from booking.forms import BookingARoomForm, CheckInARoomForm
 
+from authentication.forms import GuestForm
+from authentication.models import Guest
+
 from registration.models import Hotel
 
 
@@ -26,13 +29,19 @@ def book_a_room(request, *args, **kwargs):
 	hotel.number_of_booked_rooms = Room.objects.filter(hotel__slug=hotel_slug, is_booked=True).count()
 	if hotel.number_of_rooms == hotel.number_of_booked_rooms:
 		hotel.no_rooms_available = True
-	hotel.save()			
+	hotel.save()
 
 	form = BookingARoomForm(slug=hotel_slug)
 
 	if request.method == 'POST':
+
 		form = BookingARoomForm(request.POST, slug=hotel_slug)
+
 		if form.is_valid():
+
+			if not request.user.is_authenticated:
+				messages.warning(request, 'For you to book a room, we would need a few details about you!')
+				return redirect(f'/create/guest/?next={ request.path }')
 
 			# This makes sure that the date a user wants to check in comes before the date a user wants to check out
 			if form.cleaned_data['date_to_check_out'] - form.cleaned_data['date_to_check_in'] < timedelta(days=1):
