@@ -107,10 +107,10 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
         return True
 
 
-# (^[070]\d{8}$)|(^[080]\d{8}$)|(^[081]\d{8}$)|(^[090]\d{8}$)|(^[091]\d{8}$)|(^[\+]?[234]\d{10}$)
+# (^[070]\d{8}$)|(^[080]\d{8}$)|(^[081]\d{8}$)|(^[090]\d{8}$)|(^[091]\d{8}$)|(^[\+]?[234]\d{10}$) , message="Phone number must be entered like this (09012345678) or (+2349012345678)"
 
 
-phonenumber_regex = RegexValidator(regex=r'(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)', message="Phone number must be entered like this (09012345678) or (+2349012345678)")
+phonenumber_regex = RegexValidator(regex=r'(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)')
 
 class Guest(TrackingModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

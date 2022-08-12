@@ -11,7 +11,7 @@ class GuestForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Email address',
             }))
-    phone_number = forms.CharField(label="", max_length=11, min_length=11,widget=forms.TextInput(attrs={
+    phone_number = forms.CharField(label="", max_length=15, min_length=10,widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Phone number',
             }))
@@ -23,7 +23,7 @@ class GuestForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Last name'
             }))
-    next_of_kin_number = forms.CharField(label="", max_length=11, min_length=11, widget=forms.TextInput(attrs={
+    next_of_kin_number = forms.CharField(label="", max_length=15, min_length=10, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Next of kin phone',
             }))
@@ -51,3 +51,5 @@ class GuestForm(ModelForm):
                 raise forms.ValidationError('A user with this email already exists. Try another...!')
         except User.DoesNotExist:
             return email 
+
+# I need to work on the create guest form and view.

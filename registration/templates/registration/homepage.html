@@ -2,8 +2,23 @@
 
 
 {% block content %}
-	<h1>This is the booking section of the hotel, these are the available list of hotels</h1>
-	{% for hotel in hotels %}
-		<h3><a class="text-decoration-none" href="{% url 'booking:book_a_room' hotel.slug %}">{{ hotel.name }}</a></h3>
-	{% endfor %}
+	<div class="mx-3">
+		<h3 class="text-center">Hotel's available today</h3>
+
+		<div class="row">
+			{% for hotel in hotels %}
+				<div class="col-md-4">
+					<div class="card">
+					  <img class="card-img-top" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image" width="500px">
+					  <div class="card-body text-center">
+					    <h4 class="card-title">{{ hotel.name }}</h4>
+					    <p class="card-text">{{ hotel.description }}</p>
+					    <a href="{% url 'booking:book_a_room' hotel.slug %}" class="btn btn-primary">Book a reservation</a>
+					  </div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		
+	</div>
 {% endblock %}
