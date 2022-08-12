@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 
+{% load static %}
 
-{% block content %}
+
+{% block header %}
+	{% include 'navbar.html' %}
+{% endblock %}
+
+{% block main %}
 	<div class="mx-3">
-		<h3 class="text-center">Hotel's available today</h3>
 
 		<div class="row">
 			{% for hotel in hotels %}
 				<div class="col-md-4">
-					<div class="card">
+					<div class="card mt-2">
 					  <img class="card-img-top" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image" width="500px">
 					  <div class="card-body text-center">
 					    <h4 class="card-title">{{ hotel.name }}</h4>

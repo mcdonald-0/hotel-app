@@ -12,10 +12,24 @@
 	</title>
 </head>
 <body>
-	{% block content %}
-		<h1>This would not be shown</h1>
-	{% endblock %}
+
+	<header>
+		{% block header %}
+		{% endblock %}
+	</header>
+
+	<main>
+		{% block main %}
+		{% endblock %}
+	</main>
+
+	<footer>
+		{% block footer %}
+		{% endblock %}
+	</footer>
 
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
 </body>
 </html>

@@ -4,7 +4,11 @@
     Checking in | Room {{ room.room_number }} at {{ room.hotel.name }}
 {% endblock %}
 
-{% block content %}
+{% block header %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block main %}
     <form method="POST"> 
         {%  csrf_token %}
         <h1>Pick a payment method</h1>
