@@ -20,5 +20,6 @@ class RoomBookingAdmin(admin.ModelAdmin):
     list_filter = ['date_booked']
 
 
+admin.site.register(RoomType)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(RoomBooking, RoomBookingAdmin)
