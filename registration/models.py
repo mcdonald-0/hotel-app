@@ -38,7 +38,7 @@ class Hotel(TrackingModel):
     date_of_hotel_profile_update = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse('booking:book_a_room', kwargs={'slug': self.slug})
+        return reverse('booking:view_rooms', kwargs={'hotel_slug': self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -7,6 +7,9 @@ from registration.models import Hotel
 def homepage(request, *args, **kwargs):
 	hotel_list = Hotel.objects.all()
 
+	for hotel in hotel_list:
+		types = hotel.room_types.all()
+
 	context = {
 		'hotels': hotel_list,
 	}

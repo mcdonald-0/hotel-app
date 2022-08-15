@@ -8,6 +8,7 @@ class RoomTypeInline(admin.TabularInline):
     model = RoomType
     extra = 1
     exclude = ['number_of_booked_rooms']
+    prepopulated_fields = {'slug': ('name',)}
 
 
 class HotelAdmin(admin.ModelAdmin):

@@ -14,7 +14,8 @@ from registration.models import Hotel
 
 
 def book_a_room(request, *args, **kwargs):
-	hotel_slug = kwargs['slug']
+	hotel_slug = kwargs['hotel_slug']
+	room_type_slug = kwargs['room_type_slug']
 	hotel = Hotel.objects.get(slug=hotel_slug)
 
 	# This logic makes sure the number of rooms the hotel has is equal to the number of rooms available in the dropdown
@@ -47,7 +48,7 @@ def book_a_room(request, *args, **kwargs):
 			if form.cleaned_data['date_to_check_out'] - form.cleaned_data['date_to_check_in'] < timedelta(days=1):
 				messages.error(request, 'Improperly configured dates')
 				messages.info(request, 'Check the date you want to check in, make sure it is before the date you want to check out')
-				return redirect('booking:book_a_room', slug=hotel_slug)
+				return redirect('booking:book_a_room', hotel_slug=hotel_slug, room_type_slug=room_type_slug)
 
 			# The entire logic here checks if the hotel has available rooms, if it does not, a hotel is not booked. if it does a hotel is booked and the number of rooms is incremented by one.
 			if hotel.number_of_booked_rooms < hotel.number_of_rooms:
@@ -67,7 +68,7 @@ def book_a_room(request, *args, **kwargs):
 					Room.objects.filter(room_number=room_number, hotel=hotel).update(room_information=room_booking, is_booked=True)
 
 					room = Room.objects.get(room_number=room_number, hotel__name=hotel)
-					return redirect('booking:check_in', hotel_slug=hotel_slug, room_slug=room.slug)
+					return redirect('booking:check_in', hotel_slug=hotel_slug, room_type_slug=room_type_slug, room_slug=room.slug)
 
 			else:
 				hotel.no_rooms_available = True
@@ -79,13 +80,16 @@ def book_a_room(request, *args, **kwargs):
 	context = {
 		'hotel': hotel,
 		'form': form,
+		'room_type_slug': room_type_slug,
 	}
 
 	return render(request, 'booking/booking.html', context)
 
 
 def check_in(request, *args, **kwargs):
-	hotel_slug, room_slug = kwargs.values()
+	hotel_slug = kwargs['hotel_slug']
+	room_slug = kwargs['room_slug']
+	room_type_slug = kwargs['room_type_slug']
 	room = Room.objects.get(slug=room_slug, hotel__slug=hotel_slug)
 
 	form = CheckInARoomForm
@@ -101,6 +105,8 @@ def check_in(request, *args, **kwargs):
 	context = {
 		'room': room,
 		'form': form,
+		'room_type_slug': room_type_slug,
+		'room_slug': room_slug
 	}
 
 	return render(request, 'booking/check_in.html', context)
@@ -115,4 +121,16 @@ def check_out(request, *args, **kwargs):
 
 	return HttpResponse('<h1>Thank you for lodging with us... come back again</h1>')
 
-# Todo: I need to create a view that shows all the rooms i have booked and i have checked  into.
+
+def view_rooms(request, *args, **kwargs):
+	hotel_slug = kwargs['hotel_slug']
+	hotel = Hotel.objects.get(slug=hotel_slug)
+	hotel_room_types = hotel.room_types.all()
+
+	context = {
+		'hotel': hotel,
+		'room_types': hotel_room_types,
+	}
+	return render(request, 'booking/view_rooms.html', context)
+
+# Todo: I need to create a view that shows all the rooms i have booked and i have checked into.

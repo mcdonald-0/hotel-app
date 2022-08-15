@@ -10,6 +10,7 @@ from helpers.models import TrackingModel
 
 class RoomType(TrackingModel):
     name = models.CharField(max_length=50)
+    slug = models.SlugField()
     hotel = models.ForeignKey(Hotel, related_name='room_types', on_delete=models.CASCADE, null=True)
     price_per_night = models.IntegerField()
     number_of_rooms = models.IntegerField()
@@ -17,6 +18,11 @@ class RoomType(TrackingModel):
 
     def __str__(self):
         return f'{self.name} at {self.hotel}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class RoomBooking(TrackingModel):

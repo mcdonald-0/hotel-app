@@ -14,11 +14,11 @@
 			{% for hotel in hotels %}
 				<div class="col-md-4">
 					<div class="card mt-2">
-					  <img class="card-img-top" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image" width="500px">
+					  <img class="card-img-top image" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image" width="500px">
 					  <div class="card-body text-center">
 					    <h4 class="card-title">{{ hotel.name }}</h4>
 					    <p class="card-text">{{ hotel.description }}</p>
-					    <a href="{% url 'booking:book_a_room' hotel.slug %}" class="btn btn-primary">Book a reservation</a>
+					    <a href="{% url 'booking:view_rooms' hotel.slug %}" class="btn btn-primary">View this hotel</a>
 					  </div>
 					</div>
 				</div>
