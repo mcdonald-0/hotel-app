@@ -20,9 +20,10 @@ class BookingARoomForm(ModelForm):
 	# This down here helps to filter the room objects by the hotel.
 	# That is when you want to book a room, it would only show the number of rooms in the hotel rather than all the hotel object
 	def __init__(self, *args, **kwargs):
-		slug = kwargs.pop('slug')
+		hotel_slug = kwargs.pop('hotel_slug')
+		room_type_slug = kwargs.pop('room_type_slug')
 		super(BookingARoomForm, self).__init__(*args, **kwargs)
-		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=slug, is_booked=False, checked_in=False)
+		self.fields['room_booked'].queryset = Room.objects.filter(hotel__slug=hotel_slug, room_type__slug=room_type_slug, is_booked=False, checked_in=False).order_by('room_number')
 
 	class Meta:
 		model = RoomBooking

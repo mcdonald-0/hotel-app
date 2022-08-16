@@ -13,14 +13,15 @@
 		<div class="row">
 			{% for hotel in hotels %}
 				<div class="col-md-4">
-					<div class="card mt-2">
-					  <img class="card-img-top image" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image" width="500px">
-					  <div class="card-body text-center">
-					    <h4 class="card-title">{{ hotel.name }}</h4>
-					    <p class="card-text">{{ hotel.description }}</p>
-					    <a href="{% url 'booking:view_rooms' hotel.slug %}" class="btn btn-primary">View this hotel</a>
-					  </div>
-					</div>
+					<a class="text-decoration-none" href="{% url 'booking:view_rooms' hotel.slug %}">
+						<div class="card mt-2 reduce-opacity">
+						  <img class="card-img-top img-fluid" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image">
+						  <div class="card-body text-center">
+						    <h4 class="card-title text-dark">{{ hotel.name }}</h4>
+						    <p class="card-text text-dark">{{ hotel.description }}</p>
+						  </div>
+						</div>
+					</a>
 				</div>
 			{% endfor %}
 		</div>

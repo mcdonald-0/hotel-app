@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 
 
 def get_hotel_image_filepath(self, *args, **kwargs):
-    return f"hotel_images/{self.slug}/{'display_image.png'}"
+    return f"hotel-images/{self.slug}/{'display-image.png'}"
 
 
 def get_default_hotel_image():

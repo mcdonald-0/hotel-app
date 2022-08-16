@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from booking.models import RoomBooking, Room
+from booking.models import RoomBooking, Room, RoomType
 from booking.forms import BookingARoomForm, CheckInARoomForm
 
 from authentication.forms import GuestForm
@@ -22,7 +22,7 @@ def book_a_room(request, *args, **kwargs):
 	if hotel.number_of_rooms == Room.objects.filter(hotel__name=hotel.name).count():
 		pass
 	else:
-		Room.objects.filter(hotel__name=hotel.name).delete()
+		# Room.objects.filter(hotel__name=hotel.name).delete()
 		for i in range(hotel.number_of_rooms):
 			Room.objects.get_or_create(hotel=hotel, room_number=i+1)
 
@@ -90,7 +90,7 @@ def check_in(request, *args, **kwargs):
 	hotel_slug = kwargs['hotel_slug']
 	room_slug = kwargs['room_slug']
 	room_type_slug = kwargs['room_type_slug']
-	room = Room.objects.get(slug=room_slug, hotel__slug=hotel_slug)
+	room = Room.objects.get(slug=room_slug, room_type__slug=room_type_slug, hotel__slug=hotel_slug)
 
 	form = CheckInARoomForm
 
@@ -132,5 +132,66 @@ def view_rooms(request, *args, **kwargs):
 		'room_types': hotel_room_types,
 	}
 	return render(request, 'booking/view_rooms.html', context)
+
+
+def specific_room_booking(request, *args, **kwargs):
+	hotel_slug = kwargs['hotel_slug']
+	room_type_slug = kwargs['room_type_slug']
+
+	hotel = Hotel.objects.get(slug=hotel_slug)
+	room_type = RoomType.objects.get(hotel=hotel, slug=room_type_slug)
+
+	for i in range(room_type.number_of_rooms):
+		Room.objects.get_or_create(hotel=hotel, room_number=i+1, room_type=room_type)
+	
+	room_type.number_of_booked_rooms = Room.objects.filter(hotel__slug=hotel_slug, room_type__slug=room_type_slug, is_booked=True).count()
+	room_type.save()
+
+	
+	form = BookingARoomForm(hotel_slug=hotel_slug, room_type_slug=room_type_slug)
+
+	if request.method == 'POST':
+
+		form = BookingARoomForm(request.POST, hotel_slug=hotel_slug, room_type_slug=room_type_slug)
+
+		if form.is_valid():
+
+			# This makes sure that the date a user wants to check in comes before the date a user wants to check out
+			if form.cleaned_data['date_to_check_out'] - form.cleaned_data['date_to_check_in'] < timedelta(days=1):
+				messages.error(request, 'Improperly configured dates')
+				messages.info(request, 'Check the date you want to check in, make sure it is before the date you want to check out')
+				return redirect('booking:book_a_room', hotel_slug=hotel_slug, room_type_slug=room_type_slug)
+
+			# This make sure that if a user books a room and still tries to book that same room within the same time range, it redirects the user to the booked room
+			try:
+				booking = RoomBooking.objects.get(hotel=hotel, guest=request.user, room_type=room_type, **form.cleaned_data)
+				if booking:
+					# Todo: i need to create a user platform where a user can see list of their booked hotels then i would redirect them there from here
+					# room = Room.objects.get(room_information=booking, hotel=hotel, room_type__slug=room_type_slug, is_booked=True)
+					messages.warning(request, 'You have already booked this room with this same dates')
+					return redirect('booking:book_a_room', hotel_slug=hotel_slug, room_type_slug=room_type_slug)
+
+			except RoomBooking.DoesNotExist:
+				RoomBooking.objects.create(hotel=hotel, guest=request.user, room_type=room_type, **form.cleaned_data)
+
+			# This gets the room booked and updates the room information to the room booking object created above			
+			room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user, room_type=room_type, **form.cleaned_data)
+			room_number = room_booking.room_booked.room_number
+			Room.objects.filter(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel).update(room_information=room_booking, is_booked=True)
+
+			room = Room.objects.get(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel)
+			return redirect('booking:check_in', hotel_slug=hotel_slug, room_type_slug=room_type_slug, room_slug=room.slug)
+
+
+
+
+	context =  {
+		'hotel': hotel,
+		'form': form,
+		'room_type_slug': room_type_slug,
+	}
+	return render(request, 'booking/booking.html', context)
+
+
 
 # Todo: I need to create a view that shows all the rooms i have booked and i have checked into.

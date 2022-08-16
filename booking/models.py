@@ -15,6 +15,7 @@ class RoomType(TrackingModel):
     price_per_night = models.IntegerField()
     number_of_rooms = models.IntegerField()
     number_of_booked_rooms = models.IntegerField(default=0)
+    no_rooms_available = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.name} at {self.hotel}'
@@ -48,9 +49,21 @@ class Room(TrackingModel):
     checked_in = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'Room {self.room_number} at {self.hotel}'
+        return f'{ self.room_type.name }{self.room_number} at {self.hotel}'
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(f'Room {self.room_number}')
         return super().save(*args, **kwargs)
+
+
+def get_room_images_filepath(self, *args, **kwargs):
+    return f"hotel-images/{self.room.hotel.slug}/{self.room.room_type.slug}-images/room-{self.room.room_number}-images/{'image.png'}"
+
+
+class Image(TrackingModel):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    image = models.ImageField(max_length=255, upload_to=get_room_images_filepath, null=True, blank=True)
+
+
+

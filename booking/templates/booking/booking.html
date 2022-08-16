@@ -21,6 +21,11 @@
 				  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				  <strong>Suggestion:</strong> {{ message }}
 			</div>
+		{% elif message.tags == 'warning' %}
+            <div class="alert alert-warning alert-dismissible mx-4">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  <strong>Warning:</strong> {{ message }}
+            </div>
 		{% endif %}
 	{% endfor %}
 	<form class="mx-4" method="POST">

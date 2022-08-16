@@ -9,6 +9,14 @@
 {% endblock %}
 
 {% block main %}
+    {% for message in messages %}
+        {% if message.tags == 'warning' %}
+            <div class="alert alert-warning alert-dismissible mx-4">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  <strong>An error occurred:</strong> {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
     <form method="POST"> 
         {%  csrf_token %}
         <h1>Pick a payment method</h1>

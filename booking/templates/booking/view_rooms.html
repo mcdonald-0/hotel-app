@@ -12,14 +12,15 @@
     <div class="row">
         {% for room_type in room_types %}
         <div class="col-md-4">
-           <div class="card">
-              <img class="card-img-top image" src="{{ room_type.hotel.display_image.url }}" alt="Card image">
-              <div class="card-body text-center">
-                <h4 class="card-title">{{ room_type.name }}</h4>
-                <p class="card-text">This room costs ₦{{ room_type.price_per_night }} per night</p>
-                <a href="{% url 'booking:book_a_room' hotel.slug room_type.slug %}" class="btn btn-secondary">Make a reservation</a>
-              </div>
-            </div>
+            <a href="{% url 'booking:book_a_room' hotel.slug room_type.slug %}" class="text-decoration-none">
+               <div class="card mt-2 reduce-opacity">
+                  <img class="card-img-top image" src="{{ room_type.hotel.display_image.url }}" alt="Card image">
+                  <div class="card-body text-center">
+                    <h4 class="card-title text-dark">{{ room_type.name }}</h4>
+                    <p class="card-text text-dark">This room costs ₦{{ room_type.price_per_night }} per night</p>
+                  </div>
+                </div>
+            </a>
         </div>
         {% endfor %}
     </div>
