@@ -1,51 +1,11 @@
-html, body {
-   margin:0;
-   padding:0;
-   height:100%;
-}
-
-footer {
-   position: relative;
-   bottom:0;
-   width:100%;
-   height:20px;
-}
-
-.card{
-    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
-    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
-  cursor: pointer;
-}
-
-.card:hover{
-     transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
-}
-
-.reduce-opacity:hover {
-    opacity: 0.8;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*----  Main Style  ----*/
 #cards_landscape_wrap-2{
   text-align: center;
   background: #F7F7F7;
 }
 #cards_landscape_wrap-2 .container{
-
+  padding-top: 80px; 
+  padding-bottom: 100px;
 }
 #cards_landscape_wrap-2 a{
   text-decoration: none;
@@ -61,10 +21,10 @@ footer {
   border-radius: 5px;
 }
 #cards_landscape_wrap-2 .card-flyer .image-box img{
-  -webkit-transition:all .9s ease;
-  -moz-transition:all .9s ease;
+  -webkit-transition:all .9s ease; 
+  -moz-transition:all .9s ease; 
   -o-transition:all .9s ease;
-  -ms-transition:all .9s ease;
+  -ms-transition:all .9s ease; 
   width: 100%;
   height: 200px;
 }
@@ -105,14 +65,14 @@ footer {
 #cards_landscape_wrap-2 .card-flyer .text-box p{
   margin-top: 10px;
   margin-bottom: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 0px; 
   font-size: 14px;
   letter-spacing: 1px;
   color: #000000;
 }
 #cards_landscape_wrap-2 .card-flyer .text-box h6{
   margin-top: 0px;
-  margin-bottom: 4px;
+  margin-bottom: 4px; 
   font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;

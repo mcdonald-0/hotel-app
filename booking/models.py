@@ -42,7 +42,7 @@ class RoomBooking(TrackingModel):
 class Room(TrackingModel):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     slug = models.SlugField()
-    room_information = models.ForeignKey(RoomBooking, on_delete=models.SET_NULL, null=True)
+    room_information = models.ForeignKey(RoomBooking, on_delete=models.SET_NULL, blank=True, null=True)
     room_number = models.IntegerField()
     room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
     is_booked = models.BooleanField(default=False)

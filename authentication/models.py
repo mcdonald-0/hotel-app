@@ -112,6 +112,7 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
 
 phonenumber_regex = RegexValidator(regex=r'(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)')
 
+
 class Guest(TrackingModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email address'), null=True, unique=True, error_messages={'unique': _("A user with this email already exists.")})

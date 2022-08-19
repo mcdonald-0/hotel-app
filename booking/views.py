@@ -147,7 +147,6 @@ def specific_room_booking(request, *args, **kwargs):
 	room_type.number_of_booked_rooms = Room.objects.filter(hotel__slug=hotel_slug, room_type__slug=room_type_slug, is_booked=True).count()
 	room_type.save()
 
-	
 	form = BookingARoomForm(hotel_slug=hotel_slug, room_type_slug=room_type_slug)
 
 	if request.method == 'POST':

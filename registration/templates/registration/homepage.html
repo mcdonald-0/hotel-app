@@ -8,23 +8,29 @@
 {% endblock %}
 
 {% block main %}
-	<div class="mx-3">
 
-		<div class="row">
-			{% for hotel in hotels %}
-				<div class="col-md-4">
-					<a class="text-decoration-none" href="{% url 'booking:view_rooms' hotel.slug %}">
-						<div class="card mt-2 reduce-opacity">
-						  <img class="card-img-top img-fluid" src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s' image">
-						  <div class="card-body text-center">
-						    <h4 class="card-title text-dark">{{ hotel.name }}</h4>
-						    <p class="card-text text-dark">{{ hotel.description }}</p>
-						  </div>
-						</div>
-					</a>
+	<div id="cards_landscape_wrap-2">
+			<div class="container">
+				<div class="row">
+					{% for hotel in hotels %}
+						<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+						<a href="{% url 'booking:view_rooms' hotel.slug %}">
+							<div class="card-flyer">
+								<div class="text-box">
+									<div class="image-box">
+										<img src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s display image">
+									</div>
+									<div class="text-container">
+										<h6>{{ hotel.name }}</h6>
+										<p>{{ hotel.description }}</p>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					{% endfor %}
 				</div>
-			{% endfor %}
+			</div>
 		</div>
-		
-	</div>
+
 {% endblock %}
