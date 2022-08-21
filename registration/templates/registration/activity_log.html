@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block header %}
+	{% include 'navbar.html' %}
+{% endblock %}
+
+
+{% block custom_style %}
+
+    <style type="text/css">
+    .card{border-radius: 5px;box-shadow: 0 1px 20px 0 rgba(69,90,100,0.08);border: none;margin-bottom: 30px}.card .card-header{background-color: transparent;border-bottom: none;padding: 25px 20px}.card-block{padding: 1.25rem;margin-top:-40px}.card .card-header h5{margin-bottom: 0;color: #505458;font-size: 14px;font-weight: 600;display: inline-block;margin-right: 10px;line-height: 1.4}.text-muted{margin-bottom:0px}.m-b-25{margin-top:20px}.m-b-5{margin-bottom: 5px}h6{font-size: 14px}.card .card-block p{line-height: 25px}.text-muted{color: #919aa3 !important}.card .card-block p{line-height: 25px}.text-center{margin-top: 15px}
+    </style>
+    
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Hello {{ guest.first_name }}, You have {{ bookings.count }} log item{{ bookings.count|pluralize }} so far...</h3>
+            </div>
+            <div class="card-block">
+              {% for booking in bookings %}
+                <div class="row m-b-25">
+                    <div class="col">
+                        <h6 class="m-b-5">{{ booking.hotel.name }} booking reservation</h6>
+                        <p class="m-b-0">A {{ booking.room_type.name|lower }} booking was made at {{ booking.hotel.name }} for a duration of <b>{{ booking.duraton_of_stay.days }} day{{ booking.duraton_of_stay.days|pluralize }}</b>. <u>{{ booking.date_to_check_in }}</u>, the schedled date to check in and <u>{{ booking.date_to_check_out }}</u>, the schedled date to check out</p>
+                        <p class="text-muted m-b-0">Date booked: <b>{{ booking.date_booked }}</b></p>
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

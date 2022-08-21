@@ -11,9 +11,10 @@
 			Hotel App
 		{% endblock %}
 	</title>
+	{% block custom_style %}
+	{% endblock %}
 </head>
 <body>
-
 	<header>
 		{% block header %}
 		{% endblock %}
@@ -29,6 +30,7 @@
 		{% endblock %}
 	</footer>
 
+	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 

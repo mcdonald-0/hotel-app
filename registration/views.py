@@ -18,7 +18,7 @@ def homepage(request, *args, **kwargs):
 	return render(request, 'registration/homepage.html', context)
 
 
-def view_my_profile(request, *args, **kwargs):
+def activity_log(request, *args, **kwargs):
 	user_id = kwargs["user_id"]
 
 	guest = Guest.objects.get(pk=user_id)
@@ -28,4 +28,4 @@ def view_my_profile(request, *args, **kwargs):
 		'guest': guest,
 		'bookings': booking_made,
 	}
-	return render(request, 'registration/view_my_profile.html', context)
+	return render(request, 'registration/activity_log.html', context)

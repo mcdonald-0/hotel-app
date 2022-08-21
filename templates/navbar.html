@@ -22,9 +22,11 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Notifications</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
-        </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'registration:activity_log' request.user.id %}">Activity log</a>
+          </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="#">Switch account</a>
         </li>
@@ -41,7 +43,15 @@
   </div>
 </nav>
 
-<script src="{% static 'js/navbar.js' %}"></script>
+<script type="text/javascript">
+  (function () {
+  'use strict'
+
+  document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
+    document.querySelector('.offcanvas-collapse').classList.toggle('open')
+  })
+  })()
+</script>
 
 
 
