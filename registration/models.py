@@ -1,3 +1,5 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 from django.db import models
 from helpers.models import TrackingModel
 
@@ -29,7 +31,9 @@ class Hotel(TrackingModel):
     email = models.EmailField()
     display_image = models.ImageField(max_length=255, upload_to=get_hotel_image_filepath, null=True, blank=True,
                                       default=get_default_hotel_image)
-    number_of_rooms = models.IntegerField()
+    number_of_rooms = models.IntegerField(default=0, validators=[
+        MaxValueValidator(25), MinValueValidator(5)
+    ])
     number_of_booked_rooms = models.IntegerField(default=0)
     rating = models.IntegerField(default=0)
     no_rooms_available = models.BooleanField(default=False)
@@ -41,6 +45,9 @@ class Hotel(TrackingModel):
         return reverse('booking:view_rooms', kwargs={'hotel_slug': self.slug})
 
     def save(self, *args, **kwargs):
+        # This here makes it that the number of rooms is equal to the total of the rooms under each room types in the hotel
+        for i in self.room_types.all():
+            self.number_of_rooms += i.number_of_rooms
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)

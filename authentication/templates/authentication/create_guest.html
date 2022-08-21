@@ -6,27 +6,20 @@
 
 {% block main %}
 	{% for message in messages %}
-        <div class="alert alert-warning alert-dismissible mx-4">
+        {% if message.tags == 'warning' %}
+            <div class="alert alert-warning alert-dismissible mx-4">
               <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
               <strong>Warning:</strong> {{ message }}
         </div>
+        {% elif message.tags == 'info' %}
+            <div class="alert alert-info alert-dismissible mx-4">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <strong>Information:</strong> {{ message }}
+        </div>
+        {% endif %}
 	{% endfor %}
 	<form class="mx-4" action="{% url 'authentication:create_guest' %}" method="POST">
 		{% csrf_token %}
-		<div class="form-group mt-3">
-            {{ form.email }}
-        </div>
-        {% if form.errors %}
-            {{ form.errors.email }}
-        {% endif %}
-
-        <div class="form-group mt-3">
-            {{ form.phone_number }}
-        </div>
-        {% if form.errors %}
-            {{ form.errors.phone_number }}
-        {% endif %}
-
         <div class="form-group mt-3">
             {{ form.first_name }}
         </div>
@@ -39,6 +32,20 @@
         </div>
         {% if form.errors %}
             {{ form.errors.last_name }}
+        {% endif %}
+
+        <div class="form-group mt-3">
+            {{ form.email }}
+        </div>
+        {% if form.errors %}
+            {{ form.errors.email }}
+        {% endif %}
+
+        <div class="form-group mt-3">
+            {{ form.phone_number }}
+        </div>
+        {% if form.errors %}
+            {{ form.errors.phone_number }}
         {% endif %}
 
         <div class="form-group mt-3">

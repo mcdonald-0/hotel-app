@@ -100,7 +100,7 @@
                 {% for room_type in room_types %}
                     
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <a href="{% url 'booking:view_rooms' hotel.slug %}">
+                        <a href="{% url 'booking:book_a_room' hotel.slug room_type.slug %}">
                             <div class="card-flyer">
                                 <div class="text-box">
                                     <div class="image-box">

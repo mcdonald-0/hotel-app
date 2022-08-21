@@ -36,9 +36,8 @@ class RoomBooking(TrackingModel):
     date_to_check_out = models.DateField()
 
     @property
-    def duraton_of_stay(self):
+    def duration_of_stay(self):
         return self.date_to_check_out - self.date_to_check_in
-    
 
     def __str__(self):
         return f'Booking of room {self.room_booked.room_number} at {self.hotel}'

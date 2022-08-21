@@ -19,11 +19,11 @@ class GuestForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'First name'
             }))
-    last_name = forms.CharField(max_length=150, label="", widget=forms.TextInput(attrs={
+    last_name = forms.CharField(max_length=150, label="", required=False, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Last name'
             }))
-    next_of_kin_number = forms.CharField(label="", max_length=15, min_length=10, widget=forms.TextInput(attrs={
+    next_of_kin_number = forms.CharField(label="", required=False, max_length=15, min_length=10, widget=forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Next of kin phone',
             }))

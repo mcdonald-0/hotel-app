@@ -149,6 +149,11 @@ def specific_room_booking(request, *args, **kwargs):
 
 	form = BookingARoomForm(hotel_slug=hotel_slug, room_type_slug=room_type_slug)
 
+	if not request.user.is_authenticated:
+		messages.warning(request, 'Before you proceed, we would need a few details about you!')
+		messages.info(request, 'We need this so we can relate to you personally and also for your safety!')
+		return redirect(f'/create/guest/?next={ request.path }')
+
 	if request.method == 'POST':
 
 		form = BookingARoomForm(request.POST, hotel_slug=hotel_slug, room_type_slug=room_type_slug)
