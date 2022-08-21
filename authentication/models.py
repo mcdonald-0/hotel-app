@@ -114,7 +114,7 @@ phonenumber_regex = RegexValidator(regex=r'(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)')
 
 
 class Guest(TrackingModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, related_name="guest", on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email address'), null=True, unique=True, error_messages={'unique': _("A user with this email already exists.")})
     phone_number = models.CharField(validators=[phonenumber_regex], max_length=17)
     first_name = models.CharField(max_length=150)

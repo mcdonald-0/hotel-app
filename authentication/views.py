@@ -15,9 +15,9 @@ def create_guest(request, *args, **kwargs):
         form = GuestForm(request.POST)
 
         if form.is_valid():
-            user = User.objects.create_user(email=form.cleaned_data['email'])
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            Guest.objects.create(id=user.id, user=user, **form.cleaned_data)
+            user = User.objects.get_or_create(email=form.cleaned_data['email'])
+            login(request, user[0], backend='django.contrib.auth.backends.ModelBackend')
+            Guest.objects.create(id=user[0].id, user=user[0], **form.cleaned_data)
 
             destination = request.POST.get('next')
 

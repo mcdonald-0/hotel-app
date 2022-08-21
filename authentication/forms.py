@@ -46,10 +46,10 @@ class GuestForm(ModelForm):
         email = self.cleaned_data['email']
 
         try:
-            user = User.objects.get(email=email)
-            if user:
-                raise forms.ValidationError('A user with this email already exists. Try another...!')
-        except User.DoesNotExist:
+            guest = Guest.objects.get(email=email)
+            if guest:
+                raise forms.ValidationError('Someone with this email already exists. Try another...!')
+        except Guest.DoesNotExist:
             return email 
 
 # I need to work on the create guest form and view.

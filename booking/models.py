@@ -30,7 +30,7 @@ class RoomBooking(TrackingModel):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
     room_booked = models.ForeignKey('Room', on_delete=models.CASCADE)
-    guest = models.ForeignKey(User, on_delete=models.CASCADE)
+    guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
     date_booked = models.DateTimeField(auto_now=True)
     date_to_check_in = models.DateField()
     date_to_check_out = models.DateField()

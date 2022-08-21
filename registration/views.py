@@ -22,7 +22,7 @@ def activity_log(request, *args, **kwargs):
 	user_id = kwargs["user_id"]
 
 	guest = Guest.objects.get(pk=user_id)
-	booking_made = RoomBooking.objects.filter(guest=guest.user)
+	booking_made = RoomBooking.objects.filter(guest=guest)
 
 	context = {
 		'guest': guest,

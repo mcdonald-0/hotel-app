@@ -8,7 +8,7 @@ from booking.models import RoomBooking, Room, RoomType
 from booking.forms import BookingARoomForm, CheckInARoomForm
 
 from authentication.forms import GuestForm
-from authentication.models import Guest
+from authentication.models import Guest, User
 
 from registration.models import Hotel
 
@@ -149,8 +149,18 @@ def specific_room_booking(request, *args, **kwargs):
 
 	form = BookingARoomForm(hotel_slug=hotel_slug, room_type_slug=room_type_slug)
 
+	# This here checks if the user is an anonymus user
 	if not request.user.is_authenticated:
 		messages.warning(request, 'Before you proceed, we would need a few details about you!')
+		messages.info(request, 'We need this so we can relate to you personally and also for your safety!')
+		return redirect(f'/create/guest/?next={ request.path }')
+
+	# This checks if the user already has a user profile but no guest profile
+	try:
+		request.user.guest
+	except User.guest.RelatedObjectDoesNotExist:
+		messages.warning(request, 'Before you proceed, we would need a few details about you!')
+		messages.warning(request, 'It seems you have created a profile before but some error occoured')
 		messages.info(request, 'We need this so we can relate to you personally and also for your safety!')
 		return redirect(f'/create/guest/?next={ request.path }')
 
@@ -168,7 +178,7 @@ def specific_room_booking(request, *args, **kwargs):
 
 			# This make sure that if a user books a room and still tries to book that same room within the same time range, it redirects the user to the booked room
 			try:
-				booking = RoomBooking.objects.get(hotel=hotel, guest=request.user, room_type=room_type, **form.cleaned_data)
+				booking = RoomBooking.objects.get(hotel=hotel, guest=request.user.guest, room_type=room_type, **form.cleaned_data)
 				if booking:
 					# Todo: i need to create a user platform where a user can see list of their booked hotels then i would redirect them there from here
 					# room = Room.objects.get(room_information=booking, hotel=hotel, room_type__slug=room_type_slug, is_booked=True)
@@ -176,20 +186,17 @@ def specific_room_booking(request, *args, **kwargs):
 					return redirect('booking:book_a_room', hotel_slug=hotel_slug, room_type_slug=room_type_slug)
 
 			except RoomBooking.DoesNotExist:
-				RoomBooking.objects.create(hotel=hotel, guest=request.user, room_type=room_type, **form.cleaned_data)
+				RoomBooking.objects.create(hotel=hotel, guest=request.user.guest, room_type=room_type, **form.cleaned_data)
 
 			# This gets the room booked and updates the room information to the room booking object created above			
-			room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user, room_type=room_type, **form.cleaned_data)
+			room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user.guest, room_type=room_type, **form.cleaned_data)
 			room_number = room_booking.room_booked.room_number
 			Room.objects.filter(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel).update(room_information=room_booking, is_booked=True)
 
 			room = Room.objects.get(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel)
 			return redirect('booking:check_in', hotel_slug=hotel_slug, room_type_slug=room_type_slug, room_slug=room.slug)
 
-
-
-
-	context =  {
+	context = {
 		'hotel': hotel,
 		'form': form,
 		'room_type_slug': room_type_slug,

@@ -22,7 +22,7 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Notifications</a>
         </li>
-        {% if request.user.is_authenticated %}
+        {% if request.user.guest %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'registration:activity_log' request.user.id %}">Activity log</a>
           </li>
