@@ -218,6 +218,7 @@ def specific_room_booking(request, *args, **kwargs):
     context = {
         'hotel': hotel,
         'form': form,
+        'room_type': room_type,
         'room_type_slug': room_type_slug,
     }
     return render(request, 'booking/booking.html', context)

@@ -26,6 +26,15 @@ class RoomType(TrackingModel):
         return super().save(*args, **kwargs)
 
 
+def get_room_type_images_filepath(self, *args, **kwargs):
+    return f"hotel-images/{self.room_type.hotel.slug}/{self.room_type.slug}-images/{'image.png'}"
+
+
+class Image(TrackingModel):
+    room_type = models.ForeignKey(RoomType, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(max_length=255, upload_to=get_room_type_images_filepath, null=True, blank=True)
+
+
 class RoomBooking(TrackingModel):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
@@ -59,15 +68,6 @@ class Room(TrackingModel):
         if not self.slug:
             self.slug = slugify(f'Room {self.room_number}')
         return super().save(*args, **kwargs)
-
-
-def get_room_images_filepath(self, *args, **kwargs):
-    return f"hotel-images/{self.room.hotel.slug}/{self.room.room_type.slug}-images/room-{self.room.room_number}-images/{'image.png'}"
-
-
-class Image(TrackingModel):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    image = models.ImageField(max_length=255, upload_to=get_room_images_filepath, null=True, blank=True)
 
 
 

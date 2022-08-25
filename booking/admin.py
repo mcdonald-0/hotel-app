@@ -2,9 +2,18 @@ from django.contrib import admin
 from booking.models import RoomType, RoomBooking, Room, Image
 
 
-class RoomImageInline(admin.TabularInline):
+class RoomTypeImageInline(admin.TabularInline):
     model = Image
-    extra = 4
+    extra = 1
+
+
+class RoomTypeAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Basic information', {'fields': ['name', 'hotel', 'price_per_night']}),
+        ('Status', {'fields': ['number_of_rooms', 'number_of_booked_rooms', 'no_rooms_available']}),
+    ]
+    list_display = ('__str__', 'no_rooms_available')
+    inlines = [RoomTypeImageInline]
 
 
 class RoomAdmin(admin.ModelAdmin):
@@ -12,7 +21,6 @@ class RoomAdmin(admin.ModelAdmin):
         ('Important information', {'fields': ['hotel', 'slug', 'room_type', 'room_number', 'room_information']}),
         ('Room status', {'fields': ['is_booked', 'checked_in']}),
     ]
-    inlines = [RoomImageInline]
     list_display = ('__str__', 'is_booked', 'checked_in')
     list_filter = ['is_booked', 'checked_in', 'hotel__name', 'hotel__location']
 
@@ -27,6 +35,6 @@ class RoomBookingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Image)
-admin.site.register(RoomType)
+admin.site.register(RoomType, RoomTypeAdmin)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(RoomBooking, RoomBookingAdmin)

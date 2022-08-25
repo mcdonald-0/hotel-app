@@ -7,8 +7,8 @@ from booking.models import RoomType
 class RoomTypeInline(admin.TabularInline):
     model = RoomType
     extra = 1
-    exclude = ['number_of_booked_rooms']
-    prepopulated_fields = {'slug': ('name',)}
+    exclude = ['number_of_booked_rooms', 'slug', 'no_rooms_available']
+    # prepopulated_fields = {'slug': ('name',)}
 
 
 class HotelAdmin(admin.ModelAdmin):
@@ -19,10 +19,10 @@ class HotelAdmin(admin.ModelAdmin):
     ]
     inlines = [RoomTypeInline]
     list_display = ('name', 'location', 'no_rooms_available')
-    readonly_fields = ['id', 'number_of_rooms', 'date_of_hotel_profile_update', 'rating', 'no_rooms_available', 'number_of_booked_rooms', 'created_at']
+    readonly_fields = ['id', 'number_of_rooms', 'slug', 'date_of_hotel_profile_update', 'rating', 'no_rooms_available', 'number_of_booked_rooms', 'created_at']
     list_filter = ['no_rooms_available', 'date_of_hotel_profile_update']
     search_fields = ['location__name', 'name']
-    prepopulated_fields = {'slug': ('name',)}
+    # prepopulated_fields = {'slug': ('name',)}
 
 
 admin.site.register(Location)
