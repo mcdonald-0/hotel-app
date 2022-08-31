@@ -62,10 +62,10 @@ def book_a_room(request, *args, **kwargs):
                 booking = RoomBooking.objects.get(hotel=hotel, guest=request.user.guest, room_type=room_type,
                                                   **form.cleaned_data)
                 if booking:
-                    # Todo: i need to create a user platform where a user can see list of their booked hotels then i would redirect them there from here
+                    # Todo: I need to redirect the users to the specific room booking url
                     # room = Room.objects.get(room_information=booking, hotel=hotel, room_type__slug=room_type_slug, is_booked=True)
-                    messages.warning(request, 'You have already booked this room with this same dates')
-                    return redirect('booking:book_a_room', hotel_slug=hotel_slug, room_type_slug=room_type_slug)
+                    messages.warning(request, 'You have already booked this room with the same dates')
+                    return redirect('registration:activity_log', user_id=booking.guest.id)
 
             except RoomBooking.DoesNotExist:
                 RoomBooking.objects.create(hotel=hotel, guest=request.user.guest, room_type=room_type,
@@ -135,8 +135,8 @@ def view_rooms(request, *args, **kwargs):
     today = date.today()
 
     # This makes sure that if the date is less than today, is_booked and is_checked equals false
-    for i in RoomBooking.objects.filter(date_to_check_out__lt=today):
-        room = Room.objects.get(room_information=i)
+    for item in RoomBooking.objects.filter(date_to_check_out__lt=today):
+        room = Room.objects.get(room_information=item)
         room.is_booked = False
         room.checked_in = False
         room.save()
@@ -148,4 +148,5 @@ def view_rooms(request, *args, **kwargs):
     return render(request, 'booking/view_rooms.html', context)
 
 
-# Todo: I need to create a view that shows all the rooms i have booked and i have checked into.
+# Todo: I need to make sure that nobody can change the room 'is_booked' status, it should be automatic and if the date
+#   booked is passed, it would automatically be false

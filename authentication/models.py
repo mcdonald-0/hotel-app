@@ -10,6 +10,8 @@ from django.db import models
 
 from helpers.models import TrackingModel
 
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 class AccountManager(BaseUserManager):
 
@@ -104,19 +106,13 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
         return True
 
 
-# (^[070]\d{8}$)|(^[080]\d{8}$)|(^[081]\d{8}$)|(^[090]\d{8}$)|(^[091]\d{8}$)|(^[\+]?[234]\d{10}$) , message="Phone number must be entered like this (09012345678) or (+2349012345678)"
-
-
-phonenumber_regex = RegexValidator(regex=r'(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)')
-
-
 class Guest(TrackingModel):
     user = models.OneToOneField(User, related_name="guest", on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email address'), null=True, unique=True, error_messages={'unique': _("A user with this email already exists.")})
-    phone_number = models.CharField(validators=[phonenumber_regex], max_length=17)
+    phone_number = PhoneNumberField(unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150, blank=True, null=True)
-    next_of_kin_number = models.CharField(validators=[phonenumber_regex], max_length=17, blank=True)
+    next_of_kin_number = PhoneNumberField(unique=True, null=False, blank=False)
 
     def __str__(self):
         return f'{ self.first_name } { self.last_name }'

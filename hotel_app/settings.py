@@ -51,7 +51,11 @@ INSTALLED_APPS = [
 
     # Third party apps
     'widget_tweaks',
+    'phonenumber_field',
 ]
+
+PHONENUMBER_DEFAULT_REGION = "NG"
+PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

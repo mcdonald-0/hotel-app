@@ -20,6 +20,14 @@
 {% block main %}
 
     <div class="container">
+        {% for message in messages %}
+            {% if message.tags == 'warning' %}
+                <div class="alert alert-warning alert-dismissible mt-2">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  <strong>Warning:</strong> {{ message }}
+                </div>
+            {% endif %}
+	    {% endfor %}
         <div class="card">
             <div class="card-header">
                 <h3>Hello {{ guest.first_name }}, You have {{ bookings.count }} log item{{ bookings.count|pluralize }} so far...</h3>
