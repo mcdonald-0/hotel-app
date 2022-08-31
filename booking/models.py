@@ -3,7 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from registration.models import Hotel
-from authentication.models import Guest, User
+from authentication.models import Guest
 
 from helpers.models import TrackingModel
 
