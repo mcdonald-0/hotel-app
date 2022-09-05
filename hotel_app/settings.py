@@ -52,7 +52,12 @@ INSTALLED_APPS = [
     # Third party apps
     'widget_tweaks',
     'phonenumber_field',
+    'debug_toolbar',
+    'django_extensions',
 ]
+
+PAYSTACK_PUBLIC_KEY = 'pk_test_4788f9a7d73d6207c187a6f64d2318453c07102e'
+PAYSTACK_SECRET_KEY = 'sk_test_2b24317254ce3d86a37fbf2447beacf4735a24dc'
 
 PHONENUMBER_DEFAULT_REGION = "NG"
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
@@ -65,7 +70,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Third party apps
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'hotel_app.urls'
 

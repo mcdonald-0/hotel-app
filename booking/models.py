@@ -6,6 +6,7 @@ from registration.models import Hotel
 from authentication.models import Guest
 
 from helpers.models import TrackingModel
+from helpers.utils import compress_image
 
 
 class RoomType(TrackingModel):
@@ -24,15 +25,6 @@ class RoomType(TrackingModel):
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
-
-
-def get_room_type_images_filepath(self, *args, **kwargs):
-    return f"hotel-images/{self.room_type.hotel.slug}/{self.room_type.slug}-images/{'image.png'}"
-
-
-class Image(TrackingModel):
-    room_type = models.ForeignKey(RoomType, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(max_length=255, upload_to=get_room_type_images_filepath, null=True, blank=True)
 
 
 class RoomBooking(TrackingModel):
@@ -69,5 +61,21 @@ class Room(TrackingModel):
             self.slug = slugify(f'Room {self.room_number}')
         return super().save(*args, **kwargs)
 
+
+def get_room_type_images_filepath(self, *args, **kwargs):
+    return f"hotel-images/{self.room_type.hotel.slug}/{self.room_type.slug}-images/{'image.jpeg'}"
+
+
+class Image(TrackingModel):
+    room_type = models.ForeignKey(RoomType, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(max_length=255, upload_to=get_room_type_images_filepath)
+
+    def __str__(self):
+        return f'{self.room_type.hotel.name} Image {self.pk}'
+
+    def save(self, *args, **kwargs):
+        new_image = compress_image(self.image)
+        self.image = new_image
+        return super().save(*args, **kwargs)
 
 
