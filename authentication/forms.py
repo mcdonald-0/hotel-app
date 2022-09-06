@@ -3,7 +3,7 @@ import re
 from django import forms
 from django.forms import ModelForm
 
-from authentication.models import Guest, User
+from authentication.models import Guest
 
 
 class GuestForm(ModelForm):

@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='image',
             name='image',
-            field=models.ImageField(max_length=255, upload_to=booking.models.get_room_type_images_filepath),
+            field=models.ImageField(max_length=255, upload_to=booking.models.image_filepath),
         ),
     ]

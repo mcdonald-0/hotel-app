@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Checking in | Room {{ room.room_number }} at {{ room.hotel.name }}
+    Make payments | {{ room.room_type.name }} at {{ room.hotel.name }}
 {% endblock %}
 
 {% block header %}
@@ -17,6 +17,9 @@
             </div>
         {% endif %}
     {% endfor %}
+
+    <h1>Payments</h1>
+
     <form method="POST"> 
         {%  csrf_token %}
         <h1>Pick a payment method</h1>

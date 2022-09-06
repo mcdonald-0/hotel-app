@@ -40,6 +40,10 @@ class RoomBooking(TrackingModel):
     def duration_of_stay(self):
         return self.date_to_check_out - self.date_to_check_in
 
+    @property
+    def cost(self):
+        return self.duration_of_stay.days * self.room_type.price_per_night
+
     def __str__(self):
         return f'Booking of room {self.room_booked.room_number} at {self.hotel}'
 
@@ -62,16 +66,22 @@ class Room(TrackingModel):
         return super().save(*args, **kwargs)
 
 
-def get_room_type_images_filepath(self, *args, **kwargs):
-    return f"hotel-images/{self.room_type.hotel.slug}/{self.room_type.slug}-images/{'image.jpeg'}"
+def image_filepath(self, *args, **kwargs):
+    return f"hotel-images/{self.room_type.hotel.slug}/{self.room_type.slug}-images/{'image.jpg'}"
 
 
-class Image(TrackingModel):
+def thumbnail_filepath(self, *args, **kwargs):
+    return f"hotel-images/{self.room_type.hotel.slug}/{self.room_type.slug}-images/thumbnail/{'thumb.jpg'}"
+
+
+class RoomTypeImage(TrackingModel):
     room_type = models.ForeignKey(RoomType, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(max_length=255, upload_to=get_room_type_images_filepath)
+    image = models.ImageField(max_length=255, upload_to=image_filepath)
+    thumbnail = models.ImageField(max_length=255, upload_to=thumbnail_filepath, null=True)
 
     def __str__(self):
-        return f'{self.room_type.hotel.name} Image {self.pk}'
+        name = self.image.name.split('/')[-1:][0]
+        return f'{self.room_type.hotel.name} ------> {name}'
 
     def save(self, *args, **kwargs):
         new_image = compress_image(self.image)

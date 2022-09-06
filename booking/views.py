@@ -7,8 +7,7 @@ from django.shortcuts import render, redirect
 from booking.models import RoomBooking, Room, RoomType
 from booking.forms import BookingARoomForm, CheckInARoomForm
 
-from authentication.forms import GuestForm
-from authentication.models import Guest, User
+from authentication.models import User
 
 from registration.models import Hotel
 
@@ -97,6 +96,8 @@ def check_in(request, *args, **kwargs):
     room_type_slug = kwargs['room_type_slug']
     room = Room.objects.get(slug=room_slug, room_type__slug=room_type_slug, hotel__slug=hotel_slug)
 
+    amount = room.room_information.cost
+
     form = CheckInARoomForm
 
     if request.method == 'POST':
@@ -111,7 +112,8 @@ def check_in(request, *args, **kwargs):
         'room': room,
         'form': form,
         'room_type_slug': room_type_slug,
-        'room_slug': room_slug
+        'room_slug': room_slug,
+        'cost': amount
     }
 
     return render(request, 'booking/check_in.html', context)
@@ -147,6 +149,9 @@ def view_rooms(request, *args, **kwargs):
     }
     return render(request, 'booking/view_rooms.html', context)
 
+
+# Todo: I need to make the check_in view to calculate the amount it would cost and also i need to impliment the payment
+#   feature
 
 # Todo: I need to make sure that nobody can change the room 'is_booked' status, it should be automatic and if the date
 #   booked is passed, it would automatically be false

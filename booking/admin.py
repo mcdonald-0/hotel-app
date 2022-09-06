@@ -1,10 +1,11 @@
 from django.contrib import admin
-from booking.models import RoomType, RoomBooking, Room, Image
+from booking.models import RoomType, RoomBooking, Room, RoomTypeImage
 
 
 class RoomTypeImageInline(admin.TabularInline):
-    model = Image
+    model = RoomTypeImage
     extra = 1
+    exclude = ['thumbnail']
 
 
 class RoomTypeAdmin(admin.ModelAdmin):
@@ -30,11 +31,11 @@ class RoomBookingAdmin(admin.ModelAdmin):
         ('Important information', {'fields': ['hotel', 'room_booked', 'room_type', 'guest']}),
         ('Date information', {'fields': ['date_to_check_in', 'date_to_check_out']}),
     ]
-    list_display = ('__str__', 'date_to_check_in', 'date_to_check_out')
+    list_display = ('__str__', 'date_to_check_in', 'date_to_check_out', 'cost')
     list_filter = ['date_booked']
 
 
-admin.site.register(Image)
+admin.site.register(RoomTypeImage)
 admin.site.register(RoomType, RoomTypeAdmin)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(RoomBooking, RoomBookingAdmin)

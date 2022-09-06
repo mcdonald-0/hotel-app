@@ -4,7 +4,7 @@ from django.contrib import admin
 from registration.models import Location, Hotel
 from booking.models import RoomType
 
-from phonenumber_field.widgets import PhoneNumberPrefixWidget, PhonePrefixSelect
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 
 class RoomTypeInline(admin.TabularInline):
