@@ -30,7 +30,6 @@
 		{% endblock %}
 	</footer>
 
-	{% block custom_script %}{% endblock %}
 	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -39,6 +38,8 @@
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })</script>
+
+	{% block custom_script %}{% endblock %}
 
 </body>
 </html>

@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
-	Make payments | Hotel app
+	Make payments | {{ room.room_type.name }}, {{ room.hotel.name }}
 {% endblock %}
 
 {% block main %}
-    {{ form.as_p }}
+    <h1>Make Payments</h1>
+    <p>
+        This is to make payment for a {{ booking_info.room_type.name }} at {{ booking_info.hotel.name }}.
+        The payment is to book a {{ booking_info.room_type.name }} from {{ booking_info.date_to_check_in }} to
+        {{ booking_info.date_to_check_out }} for the duration of
+        {{ booking_info.duration_of_stay.days }} day{{ booking_info.duration_of_stay.days|pluralize }}.
+        This would cost ₦{{ booking_info.cost }}
+    </p>
+    <button class="btn btn-large btn-success" id="make-payment-button">Make payment</button>
+    <input type="hidden" id="verified-payment-url" data-url="{% url 'payment:verify_payment' payment.ref %}" />
+{% endblock %}
+
+{% block custom_script %}
+    {{ payment|json_script:"payment-data" }}
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="{% static 'js/payments.js' %}"></script>
 {% endblock %}

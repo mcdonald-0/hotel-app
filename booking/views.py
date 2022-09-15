@@ -11,6 +11,8 @@ from authentication.models import User
 
 from registration.models import Hotel
 
+from payment.models import Payment
+
 
 def book_a_room(request, *args, **kwargs):
     hotel_slug = kwargs['hotel_slug']
@@ -78,7 +80,10 @@ def book_a_room(request, *args, **kwargs):
                 room_information=room_booking, is_booked=True)
 
             room = Room.objects.get(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel)
-            return redirect('booking:check_in', hotel_slug=hotel_slug, room_type_slug=room_type_slug,
+
+            Payment.objects.create(guest=request.user.guest, room_information=room_booking, amount=room_booking.cost)
+
+            return redirect('payment:initiate_payment', hotel_slug=hotel_slug, room_type_slug=room_type_slug,
                             room_slug=room.slug)
 
     context = {
@@ -138,10 +143,13 @@ def view_rooms(request, *args, **kwargs):
 
     # This makes sure that if the date is less than today, is_booked and is_checked equals false
     for item in RoomBooking.objects.filter(date_to_check_out__lt=today):
-        room = Room.objects.get(room_information=item)
-        room.is_booked = False
-        room.checked_in = False
-        room.save()
+        try:
+            room = Room.objects.get(room_information=item)
+            room.is_booked = False
+            room.checked_in = False
+            room.save()
+        except Room.DoesNotExist:
+            pass
 
     context = {
         'hotel': hotel,

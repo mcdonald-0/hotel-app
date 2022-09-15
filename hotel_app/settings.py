@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 
+from dotenv import load_dotenv
 from pathlib import Path
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (BASE_DIR / ".env/SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -55,10 +59,11 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'debug_toolbar',
     'django_extensions',
+    'django_admin_env_notice',
 ]
 
-PAYSTACK_PUBLIC_KEY = (BASE_DIR / ".env/PAYSTACK_PUBLIC_KEY")
-PAYSTACK_SECRET_KEY = (BASE_DIR / ".env/PAYSTACK_SECRET_KEY")
+PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 
 PHONENUMBER_DEFAULT_REGION = "NG"
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
@@ -91,6 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "django_admin_env_notice.context_processors.from_settings",
             ],
         },
     },
@@ -103,17 +109,15 @@ WSGI_APPLICATION = 'hotel_app.wsgi.application'
 
 
 # Postgres database configuration
-DB_NAME = 'hotel_app'
-DB_USER = 'django'
-DB_PASSWORD = 'password'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 
 }

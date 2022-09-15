@@ -58,7 +58,7 @@ class Room(TrackingModel):
     checked_in = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{ self.room_type.name }{self.room_number} at {self.hotel}'
+        return f'{ self.room_type.name } {self.room_number} at {self.hotel}'
 
     def save(self, *args, **kwargs):
         if not self.slug:

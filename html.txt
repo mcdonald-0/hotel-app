@@ -1,0 +1,15 @@
+<div class="container d-flex justify-content-center">
+	<div class="card mt-5 p-4 text-white">
+		<p class="top mb-1">You need to pay</p>
+		<div class="d-flex flex-row justify-content-between text-align-center xyz">
+			<h2><i class="fas fa-euro-sign"></i><span>888</span></h2>
+			<div class="discount"><span>32% OFF</span></div>
+		</div>
+		<div class="card-content mt-4">
+			<p>Once you complete the payment, you can start enjoying all our features.</p>
+		</div>
+		<div class="mt-2">
+			<button class="btn btn-block btn-lg btn-primary"><span>Make payment</span><i class="fas fa-arrow-right"></i></button>
+		</div>
+	</div>
+</div>
