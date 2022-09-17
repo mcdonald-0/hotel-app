@@ -1,12 +1,26 @@
 import secrets
 
+from django.core.validators import MinLengthValidator
 from django.db import models
+
+from registration.models import Hotel
 
 from booking.models import Guest, RoomBooking
 
 from helpers.models import TrackingModel
 
 from payment.paystack import PayStack
+
+
+class HotelBankAccount(TrackingModel):
+    hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
+    account_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=15, validators=[MinLengthValidator(8)])
+    bank_name = models.CharField(max_length=200)
+    bank_code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"{self.hotel.name} bank account"
 
 
 class Payment(TrackingModel):

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from payment.models import Payment
+from payment.models import Payment, HotelBankAccount
 
 
 class PaymentAdmin(admin.ModelAdmin):
@@ -8,3 +8,4 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(HotelBankAccount)

@@ -23,3 +23,14 @@ class PayStack:
         response_data = response.json()
         return response_data['status'], response_data['message']
 
+    def hotel_sub_account(self, *args, **kwargs):
+        path = 'subaccount'
+
+        headers = {
+            'Authorization': f'Bearer {self.secret_key}',
+            'Content-Type': 'application/json',
+
+        }
+        url = self.base_url + path
+        response = requests.get(url, headers=headers)
+

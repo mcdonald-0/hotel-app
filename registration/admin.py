@@ -3,15 +3,19 @@ from django.contrib import admin
 
 from registration.models import Location, Hotel
 from booking.models import RoomType
+from payment.models import HotelBankAccount
 
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+
+
+class HotelAccountInline(admin.TabularInline):
+    model = HotelBankAccount
 
 
 class RoomTypeInline(admin.TabularInline):
     model = RoomType
     extra = 1
     exclude = ['number_of_booked_rooms', 'slug', 'no_rooms_available']
-    # prepopulated_fields = {'slug': ('name',)}
 
 
 # This gives a dropdown of available countries regional code
@@ -31,7 +35,7 @@ class HotelAdmin(admin.ModelAdmin):
         ('More details', {'fields': ['number_of_rooms', 'number_of_booked_rooms', 'no_rooms_available', 'rating', 'created_at', 'date_of_hotel_profile_update', 'slug'], 'classes': ('collapse',)}),
     ]
     # form = HotelAdminForm
-    inlines = [RoomTypeInline]
+    inlines = [RoomTypeInline, HotelAccountInline]
     list_display = ('name', 'location', 'no_rooms_available')
     readonly_fields = ['id', 'number_of_rooms', 'slug', 'date_of_hotel_profile_update', 'rating', 'no_rooms_available', 'number_of_booked_rooms', 'created_at']
     list_filter = ['no_rooms_available', 'date_of_hotel_profile_update']
