@@ -10,6 +10,7 @@ from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 class HotelAccountInline(admin.TabularInline):
     model = HotelBankAccount
+    exclude = ['bank_code']
 
 
 class RoomTypeInline(admin.TabularInline):

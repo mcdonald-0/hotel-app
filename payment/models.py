@@ -1,5 +1,6 @@
 import secrets
 
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinLengthValidator
 from django.db import models
 
@@ -10,17 +11,24 @@ from booking.models import Guest, RoomBooking
 from helpers.models import TrackingModel
 
 from payment.paystack import PayStack
+from payment.bank_list import BANK_LIST, BANK_LIST_WITH_CODES, get_key_from_dict_value
 
 
 class HotelBankAccount(TrackingModel):
-    hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
+    hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE, related_name='bank_account')
     account_name = models.CharField(max_length=100)
     account_number = models.CharField(max_length=15, validators=[MinLengthValidator(8)])
-    bank_name = models.CharField(max_length=200)
-    bank_code = models.CharField(max_length=10)
+    bank_name = models.CharField(max_length=200, choices=BANK_LIST)
+    bank_code = models.CharField(max_length=3)
 
     def __str__(self):
         return f"{self.hotel.name} bank account"
+
+    def save(self, *args, **kwargs):
+        bank_list = dict(BANK_LIST_WITH_CODES)
+        bank_code = get_key_from_dict_value(self.bank_name, bank_list)
+        self.bank_code = bank_code
+        super().save(*args, **kwargs)
 
 
 class Payment(TrackingModel):
@@ -54,5 +62,3 @@ class Payment(TrackingModel):
         if self.verified:
             return True
         return False
-
-
