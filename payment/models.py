@@ -19,7 +19,8 @@ class HotelBankAccount(TrackingModel):
     account_name = models.CharField(max_length=100)
     account_number = models.CharField(max_length=15, validators=[MinLengthValidator(8)])
     bank_name = models.CharField(max_length=200, choices=BANK_LIST)
-    bank_code = models.CharField(max_length=3)
+    bank_code = models.CharField(max_length=300)
+    response = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.hotel.name} bank account"
@@ -28,7 +29,18 @@ class HotelBankAccount(TrackingModel):
         bank_list = dict(BANK_LIST_WITH_CODES)
         bank_code = get_key_from_dict_value(self.bank_name, bank_list)
         self.bank_code = bank_code
-        super().save(*args, **kwargs)
+
+        # This is to create the hotel sub account
+        paystack = PayStack()
+        status, result = paystack.create_hotel_sub_account(
+            business_name = self.account_name,
+            account_number = self.account_number,
+            bank_code = self.bank_code,
+            percentage_charge = 10
+            )
+
+        self.response = status, result
+        return super().save(*args, **kwargs)
 
 
 class Payment(TrackingModel):
@@ -50,7 +62,7 @@ class Payment(TrackingModel):
             object_with_similar_ref = Payment.objects.filter(ref=ref)
             if not object_with_similar_ref:
                 self.ref = ref
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     def verify_payment(self):
         paystack = PayStack()
