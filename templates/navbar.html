@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-expand-lg rounded-bottom fixed-top navbar-dark bg-dark" aria-label="Main navigation">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'registration:homepage' %}">HAP</a>
+    <a title="Hotel App Homepage" class="navbar-brand" href="{% url 'registration:homepage' %}">HAP</a>
 
     <form class="d-flex">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -24,7 +24,8 @@
         </li>
         {% if request.user.guest %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration:activity_log' request.user.id %}">Activity log</a>
+            <a title="{{ request.user.guest.first_name }}'s activity log | Hotel App" class="nav-link"
+               href="{% url 'registration:activity_log' request.user.id %}">Activity log</a>
           </li>
         {% endif %}
         <li class="nav-item">

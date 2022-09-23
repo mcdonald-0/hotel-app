@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	Book a room | {{ hotel.name }}
+	Book a room | {{ room_type.name }} @ {{ hotel.name }}
 {% endblock %}
 
 {% block header %}
@@ -63,7 +63,6 @@
   </button>
 </div>
 {% endif %}
-
 
 	<form class="mx-4 mt-4" method="POST">
 		{% csrf_token %}

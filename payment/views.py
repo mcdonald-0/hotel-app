@@ -21,14 +21,15 @@ def initiate_payment(request, *args, **kwargs):
     booking_information = RoomBooking.objects.filter(room_booked=room, guest=guest).first()
     amount = room.room_information.cost
 
-    payment_object = Payment.objects.get(guest=request.user.guest, room_information=booking_information, amount=booking_information.cost)
-    payment = model_to_dict(payment_object)
-    payment['guest_email'] = payment_object.guest.email
-    payment['paystack_public_key'] = settings.PAYSTACK_PUBLIC_KEY
-    payment['amount_value'] = payment_object.amount_value()
-    payment['redirect_url'] = f'verified/{payment_object.ref}'
+    payment = Payment.objects.get(guest=request.user.guest, room_information=booking_information, amount=booking_information.cost)
 
-    print(payment_object.amount_value())
+    payment_data = dict()
+    payment_data['ref'] = payment.ref
+    payment_data['paystack_public_key'] = settings.PAYSTACK_PUBLIC_KEY
+    payment_data['guest_email'] = payment.guest.email
+    payment_data['amount_value'] = payment.amount_value()
+    payment_data['authorization_url'] = payment.authorization_url
+    print(payment_data)
 
     form = PaymentForm()
 
@@ -39,8 +40,7 @@ def initiate_payment(request, *args, **kwargs):
         'room': room,
         'form': form,
         'booking_info': booking_information,
-        'payment': payment,
-        'paystack_public_key': settings.PAYSTACK_PUBLIC_KEY,
+        'payment_data': payment_data,
     }
 
     return render(request, 'payment/initiate_payment.html', context)

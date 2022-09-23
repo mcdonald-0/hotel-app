@@ -2,6 +2,9 @@
 
 {% load static %}
 
+{% block title %}
+    {{ request.user.guest.first_name }}'s activity log | Hotel App
+{% endblock %}
 
 {% block header %}
 	{% include 'navbar.html' %}
@@ -30,14 +33,19 @@
 	    {% endfor %}
         <div class="card">
             <div class="card-header">
-                <h3>Hello {{ guest.first_name }}, You have {{ bookings.count }} log item{{ bookings.count|pluralize }} so far...</h3>
+                <h3>Hello {{ guest.first_name }}, You have {{ bookings.count }} log item{{ bookings.count|pluralize }}
+                    so far...</h3>
             </div>
             <div class="card-block">
               {% for booking in bookings %}
                 <div class="row m-b-25">
                     <div class="col">
                         <h6 class="m-b-5">{{ booking.hotel.name }} booking reservation</h6>
-                        <p class="m-b-0">A {{ booking.room_type.name|lower }} booking was made at {{ booking.hotel.name }} for a duration of <b>{{ booking.duraton_of_stay.days }} day{{ booking.duraton_of_stay.days|pluralize }}</b>. <u>{{ booking.date_to_check_in }}</u>, the schedled date to check in and <u>{{ booking.date_to_check_out }}</u>, the schedled date to check out</p>
+                        <p class="m-b-0">A {{ booking.room_type.name|lower }} booking was made at
+                            {{ booking.hotel.name }} for a duration of <b>{{ booking.duraton_of_stay.days }}
+                                day{{ booking.duraton_of_stay.days|pluralize }}</b>. <u>{{ booking.date_to_check_in }}
+                            </u>, the schedled date to check in and <u>{{ booking.date_to_check_out }}</u>, the schedled
+                            date to check out</p>
                         <p class="text-muted m-b-0">Date booked: <b>{{ booking.date_booked }}</b></p>
 
                     </div>

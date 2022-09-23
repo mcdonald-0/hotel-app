@@ -2,14 +2,15 @@
 
 {% load static %}
 
+{% block title %}
+	Hotel App Homepage
+{% endblock %}
 
 {% block header %}
 	{% include 'navbar.html' %}
 {% endblock %}
 
-
 {% block custom_style %}
-
 	<style type="text/css">
 		#cards_landscape_wrap-2{
 		  text-align: center;
@@ -89,9 +90,7 @@
 		  color: #00acc1;
 		}
 	</style>
-
 {% endblock %}
-
 
 {% block main %}
 
@@ -100,7 +99,7 @@
 				<div class="row">
 					{% for hotel in hotels %}
 						<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-						<a href="{% url 'booking:view_rooms' hotel.slug %}">
+						<a title="View room types | {{ hotel }}" href="{% url 'booking:view_rooms' hotel.slug %}">
 							<div class="card-flyer">
 								<div class="text-box">
 									<div class="image-box">
@@ -118,5 +117,8 @@
 				</div>
 			</div>
 		</div>
+
+	<img src="default.png" width="300px" alt="Default Image">
+
 
 {% endblock %}

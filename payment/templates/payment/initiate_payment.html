@@ -15,11 +15,12 @@
         This would cost ₦{{ booking_info.cost }}
     </p>
     <button class="btn btn-large btn-success" id="make-payment-button">Make payment</button>
-    <input type="hidden" id="verified-payment-url" data-url="{% url 'payment:verify_payment' payment.ref %}" />
+    <input type="hidden" id="verified-payment-url" data-url="{% url 'payment:verify_payment' payment_data.ref %}" />
 {% endblock %}
 
 {% block custom_script %}
-    {{ payment|json_script:"payment-data" }}
+    {{ payment_data|json_script:"payment-data" }}
     <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="{{ payment_data.authorization_url }}"></script>
     <script src="{% static 'js/payments.js' %}"></script>
 {% endblock %}

@@ -24,6 +24,7 @@ class RoomAdmin(admin.ModelAdmin):
     ]
     list_display = ('__str__', 'is_booked', 'checked_in')
     list_filter = ['is_booked', 'checked_in', 'hotel__name', 'hotel__location']
+    readonly_fields = ['hotel', 'slug', 'room_information', 'room_number', 'room_type', 'is_booked', 'checked_in']
 
 
 class RoomBookingAdmin(admin.ModelAdmin):
@@ -33,6 +34,7 @@ class RoomBookingAdmin(admin.ModelAdmin):
     ]
     list_display = ('__str__', 'date_to_check_in', 'date_to_check_out', 'cost')
     list_filter = ['date_booked']
+    readonly_fields = ['hotel', 'room_type', 'room_booked', 'guest', 'date_booked', 'date_to_check_in', 'date_to_check_out']
 
 
 admin.site.register(RoomTypeImage)

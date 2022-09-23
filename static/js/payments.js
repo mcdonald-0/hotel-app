@@ -1,18 +1,19 @@
-function include(file) {
-
-    var script = document.createElement('script');
-    script.src = file;
-    script.type = 'text/javascript';
-    script.defer = true;
-
-    document.getElementsByTagName('head').item(0).appendChild(script);
-
-}
-
-include('https://js.paystack.co/v1/inline.js')
-
 var paymentData = JSON.parse(document.getElementById('payment-data').textContent),
     paymentButton = document.getElementById('make-payment-button');
+
+// function include(file) {
+
+//     var script = document.createElement('script');
+//     script.src = file;
+//     script.type = 'text/javascript';
+//     script.defer = true;
+
+//     document.getElementsByTagName('head').item(0).appendChild(script);
+
+// }
+
+// include(paymentData['authorization_url'])
+
 
 function makePayment() {
     let currency = "NGN";

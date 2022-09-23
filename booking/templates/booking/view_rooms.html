@@ -103,11 +103,13 @@
 
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                             {% if room_type.no_rooms_available == False %}
-                                <a href="{% url 'booking:book_a_room' hotel.slug room_type.slug %}">
+                                <a title="Book a room | {{ room_type.name }} @ {{ hotel.name }}"
+                                   href="{% url 'booking:book_a_room' hotel.slug room_type.slug %}">
                                     <div class="card-flyer">
                                         <div class="text-box">
                                             <div class="image-box">
-                                                <img src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s display image">
+                                                <img src="{{ hotel.display_image.url }}"
+                                                     alt="{{ hotel.name }}'s display image">
                                             </div>
                                             <div class="text-container">
                                                 <h6>{{ room_type.name }}</h6>
@@ -117,14 +119,17 @@
                                     </div>
                                 </a>
                             {% elif room_type.no_rooms_available == True %}
-                                <div class="card-flyer" data-bs-toggle="tooltip" data-bs-placement="bottom" title="This hotel is completely booked!">
+                                <div class="card-flyer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                     title="There are no rooms available!">
                                         <div class="text-box">
                                             <div class="image-box">
-                                                <img src="{{ hotel.display_image.url }}" alt="{{ hotel.name }}'s display image">
+                                                <img src="{{ hotel.display_image.url }}"
+                                                     alt="{{ hotel.name }}'s display image">
                                             </div>
                                             <div class="text-container">
                                                 <h6>{{ room_type.name }}</h6>
-                                                <p>This room costs ₦{{ room_type.price_per_night }} per night. <br> <b class="badge bg-danger text-wrap">No room available!</b></p>
+                                                <p>This room costs ₦{{ room_type.price_per_night }} per night.
+                                                    <br> <b class="badge bg-danger text-wrap">No room available!</b></p>
                                             </div>
                                         </div>
                                     </div>

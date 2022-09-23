@@ -41,7 +41,7 @@ def book_a_room(request, *args, **kwargs):
         request.user.guest
     except User.guest.RelatedObjectDoesNotExist:
         messages.warning(request, 'Before you proceed, we would need a few details about you!')
-        messages.warning(request, 'It seems you have created a profile before but some error occurred')
+        messages.warning(request, 'It seems you are a user but you are not yet a guest')
         messages.info(request, 'We need this so we can relate to you personally and also for your safety!')
         return redirect(f'/create/guest/?next={request.path}')
 
@@ -76,12 +76,14 @@ def book_a_room(request, *args, **kwargs):
             room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user.guest, room_type=room_type,
                                                    **form.cleaned_data)
             room_number = room_booking.room_booked.room_number
+
+            # This creates a payment object from the information above
+            Payment.objects.create(guest=request.user.guest, room_information=room_booking, amount=room_booking.cost)
+
             Room.objects.filter(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel).update(
                 room_information=room_booking, is_booked=True)
 
             room = Room.objects.get(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel)
-
-            Payment.objects.create(guest=request.user.guest, room_information=room_booking, amount=room_booking.cost)
 
             return redirect('payment:initiate_payment', hotel_slug=hotel_slug, room_type_slug=room_type_slug,
                             room_slug=room.slug)
@@ -158,8 +160,6 @@ def view_rooms(request, *args, **kwargs):
     return render(request, 'booking/view_rooms.html', context)
 
 
-# Todo: I need to make the check_in view to calculate the amount it would cost and also i need to impliment the payment
-#   feature
+# Todo: i need to create a more robust models and a slimmer views and put all the minor stuffs in the models
+# Todo: i need to create a decorator that if a room is completely booked, it cannot be accessed from its url
 
-# Todo: I need to make sure that nobody can change the room 'is_booked' status, it should be automatic and if the date
-#   booked is passed, it would automatically be false
