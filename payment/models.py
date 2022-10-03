@@ -81,7 +81,6 @@ class Payment(TrackingModel):
         return super().save(*args, **kwargs)
 
     # def initialize_payment(self):
-        
 
     def verify_payment(self):
         paystack = PayStack()

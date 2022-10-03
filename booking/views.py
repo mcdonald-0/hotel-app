@@ -1,3 +1,5 @@
+import requests
+
 from datetime import timedelta, date
 
 from django.contrib import messages
@@ -45,6 +47,12 @@ def book_a_room(request, *args, **kwargs):
         messages.info(request, 'We need this so we can relate to you personally and also for your safety!')
         return redirect(f'/create/guest/?next={request.path}')
 
+    try:
+        requests.get('https://api.paystack.co/')
+    except requests.exceptions.ConnectionError:
+        messages.error(request, 'No internet connection')
+        return redirect(request.path)
+
     if request.method == 'POST':
 
         form = BookingARoomForm(request.POST, hotel_slug=hotel_slug, room_type_slug=room_type_slug)
@@ -77,8 +85,16 @@ def book_a_room(request, *args, **kwargs):
                                                    **form.cleaned_data)
             room_number = room_booking.room_booked.room_number
 
+            # This is to check if there is an internet connection.
+            try:
+                requests.get('https://api.paystack.co/')
+            except requests.exceptions.ConnectionError:
+                messages.error(request, 'No internet connection')
+                return redirect(request.path)
+
             # This creates a payment object from the information above
-            Payment.objects.create(guest=request.user.guest, room_information=room_booking, amount=room_booking.cost)
+            Payment.objects.create(guest=request.user.guest, room_information=room_booking,
+                                   amount=room_booking.cost)
 
             Room.objects.filter(room_number=room_number, room_type__slug=room_type_slug, hotel=hotel).update(
                 room_information=room_booking, is_booked=True)

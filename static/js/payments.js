@@ -32,8 +32,8 @@ function makePayment() {
         obj.currency = currency.toUpperCase();
     }
 
-    var handler = PaystackPop.setup(obj);
-    handler.openIframe()
+    var handler = new PaystackPop();
+    handler.newTransaction(obj)
 }
 
 paymentButton.addEventListener('click', makePayment, false);

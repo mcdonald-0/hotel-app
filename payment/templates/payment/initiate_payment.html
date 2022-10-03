@@ -14,13 +14,15 @@
         {{ booking_info.duration_of_stay.days }} day{{ booking_info.duration_of_stay.days|pluralize }}.
         This would cost ₦{{ booking_info.cost }}
     </p>
-    <button class="btn btn-large btn-success" id="make-payment-button">Make payment</button>
+    <button class="btn btn-large btn-success" id="make-payment-button"><a href="{{ payment_data.authorization_url }}"> Make payment</a></button>
+<!--    <b>{{ payment_data.authorization_url }}</b>-->
     <input type="hidden" id="verified-payment-url" data-url="{% url 'payment:verify_payment' payment_data.ref %}" />
 {% endblock %}
 
 {% block custom_script %}
     {{ payment_data|json_script:"payment-data" }}
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+<!--    <script src="https://js.paystack.co/v1/inline.js"></script>-->
+    <script src="https://js.paystack.co/v2/inline.js">
     <script src="{{ payment_data.authorization_url }}"></script>
-    <script src="{% static 'js/payments.js' %}"></script>
+<!--    <script src="{% static 'js/payments.js' %}"></script>-->
 {% endblock %}
