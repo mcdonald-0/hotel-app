@@ -16,8 +16,6 @@ from pathlib import Path
 
 import django_heroku
 
-django_heroku.settings(locals())
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -176,3 +174,5 @@ MEDIA_ROOT = (BASE_DIR / 'media_cdn')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_heroku.settings(locals())
