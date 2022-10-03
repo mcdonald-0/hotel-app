@@ -14,6 +14,10 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
+import django_heroku
+
+django_heroku.settings(locals())
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
