@@ -85,6 +85,7 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
 INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'hotel_app.urls'
@@ -168,8 +169,8 @@ STATICFILES_DIRS = [
     (BASE_DIR / 'media'),
 ]
 
-STATIC_ROOT = (BASE_DIR / 'static_cdn')
-MEDIA_ROOT = (BASE_DIR / 'media_cdn')
+STATIC_ROOT = BASE_DIR / 'static_cdn'
+MEDIA_ROOT = BASE_DIR / 'media_cdn'
 
 
 # Default primary key field type

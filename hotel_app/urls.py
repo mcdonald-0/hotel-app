@@ -29,10 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('jsi18n/', i18n.JavaScriptCatalog.as_view(), name='jsi18n'),
-
-    # Third party apps
-    path('__debug__/', include('debug_toolbar.urls')),
-    # path('paystack/', include('paystack.urls',namespace='paystack')),
 ]
 
 
@@ -42,5 +38,5 @@ if settings.DEBUG:
 
     import debug_toolbar
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
+        path('__debug_panel__/', include(debug_toolbar.urls)),
     ] + urlpatterns
