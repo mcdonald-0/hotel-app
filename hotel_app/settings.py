@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 
+import dj_database_url
+
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -26,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'https://sleepy-shore-31933.herokuapp.com']
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -126,6 +128,11 @@ DATABASES = {
     }
 
 }
+
+# postgres://hhhkbqszwuieab:af7eabf04d13e786757d345223d4777c323c97d4765fb3d459608eec800bdc2f@ec2-3-220-76-94.compute-1.amazonaws.com:5432/dcrng4d58o8fc4
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
