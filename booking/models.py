@@ -81,7 +81,7 @@ class RoomTypeImage(TrackingModel):
 
     def __str__(self):
         name = self.image.name.split('/')[-1:][0]
-        return f'{self.room_type.hotel.name} ------> {name}'
+        return f'{self.room_type.hotel.name}, {self.room_type.name} {name}'
 
     def save(self, *args, **kwargs):
         new_image = compress_image(self.image)

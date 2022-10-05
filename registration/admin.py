@@ -10,7 +10,7 @@ from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 class HotelAccountInline(admin.TabularInline):
     model = HotelBankAccount
-    exclude = ['bank_code', 'response']
+    exclude = ['bank_code', 'response', 'paystack_subaccount_number']
 
 
 class RoomTypeInline(admin.TabularInline):

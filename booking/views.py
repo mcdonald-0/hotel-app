@@ -1,4 +1,5 @@
 import requests
+from requests.adapters import HTTPAdapter
 
 from datetime import timedelta, date
 
@@ -47,17 +48,19 @@ def book_a_room(request, *args, **kwargs):
         messages.info(request, 'We need this so we can relate to you personally and also for your safety!')
         return redirect(f'/create/guest/?next={request.path}')
 
-    try:
-        requests.get('https://api.paystack.co/')
-    except requests.exceptions.ConnectionError:
-        messages.error(request, 'No internet connection')
-        return redirect(request.path)
-
     if request.method == 'POST':
 
         form = BookingARoomForm(request.POST, hotel_slug=hotel_slug, room_type_slug=room_type_slug)
 
         if form.is_valid():
+
+            # This is to check if there is a stable internet connection to connect to paystack api.
+            try:
+                requests.get('https://api.paystack.co/')
+            except requests.exceptions.ConnectionError:
+                messages.error(request, 'We could not process your request')
+                messages.info(request, 'Please review your network settings and internet connection')
+                return redirect(request.path)
 
             # This makes sure that the date a user wants to check in comes before the date a user wants to check out
             if form.cleaned_data['date_to_check_out'] - form.cleaned_data['date_to_check_in'] < timedelta(days=1):
@@ -84,13 +87,6 @@ def book_a_room(request, *args, **kwargs):
             room_booking = RoomBooking.objects.get(hotel=hotel, guest=request.user.guest, room_type=room_type,
                                                    **form.cleaned_data)
             room_number = room_booking.room_booked.room_number
-
-            # This is to check if there is an internet connection.
-            try:
-                requests.get('https://api.paystack.co/')
-            except requests.exceptions.ConnectionError:
-                messages.error(request, 'No internet connection')
-                return redirect(request.path)
 
             # This creates a payment object from the information above
             Payment.objects.create(guest=request.user.guest, room_information=room_booking,

@@ -1,34 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	{% load static %}
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-	<title>
-		{% block title %}
-			Hotel App
-		{% endblock %}
-	</title>
-	{% block custom_style %}
-	{% endblock %}
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<title>{% block title %} Hotel Flip {% endblock %}</title>
+	{% block custom_style %} {% endblock %}
 </head>
 <body>
-	<header>
-		{% block header %}
-		{% endblock %}
-	</header>
+	<header>{% block header %} {% endblock %}</header>
 
-	<main>
-		{% block main %}
-		{% endblock %}
-	</main>
+	<main>{% block main %} {% endblock %}</main>
 
-	<footer>
-		{% block footer %}
-		{% endblock %}
-	</footer>
+	{% block footer %} {% endblock %}
 
 	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
