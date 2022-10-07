@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'https://sleepy-shore-31933.herokuapp.com']
 
@@ -172,12 +172,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
+
 STATICFILES_DIRS = [
     (BASE_DIR / 'static'),
-    (BASE_DIR / 'media'),
+    # (BASE_DIR / 'media'),
 ]
 
-STATIC_ROOT = BASE_DIR / 'static_cdn'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
