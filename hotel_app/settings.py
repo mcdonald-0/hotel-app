@@ -14,11 +14,11 @@ import os
 import dj_database_url
 import django_on_heroku
 
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from pathlib import Path
 
 
-# load_dotenv()
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -212,3 +212,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 USE_THOUSAND_SEPARATOR = True
 
+# Debugging server email 
+# python -m smtpd -n -c DebuggingServer localhost:1025
+
+if DEBUG:
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025

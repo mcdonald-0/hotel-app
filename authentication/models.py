@@ -112,7 +112,7 @@ class Guest(TrackingModel):
     phone_number = PhoneNumberField(unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150, blank=True, null=True)
-    next_of_kin_number = PhoneNumberField(unique=True, null=False, blank=False)
+    next_of_kin_number = PhoneNumberField(null=True, blank=True)
 
     def __str__(self):
         return f'{ self.first_name } { self.last_name }'
