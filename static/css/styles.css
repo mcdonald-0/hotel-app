@@ -4,16 +4,17 @@
    height:100%;
    letter-spacing: 1px;
    background-color: #F7F7F7;
-   min-height: 100vh;
+}
+
+main{
+    min-height: 100vh;
 }
 
 footer {
-    position: fixed;
+    position: relative;
    bottom:0;
    width:100%;
-   background: #6cf;
    padding: 1rem 0;
-   margin: 1rem 0;
 }
 
 .reduce-opacity:hover {

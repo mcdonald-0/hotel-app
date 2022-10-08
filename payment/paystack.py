@@ -69,5 +69,6 @@ class PayStack:
             response_data = response.json()
             return response_data['status'], response_data['message'], response_data['data']
         response_data = response.json()
+        response_data['data'] = 'Error'
         return response_data['status'], response_data['message'], response_data['data']
 

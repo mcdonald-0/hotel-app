@@ -26,9 +26,11 @@ urlpatterns = [
     path('create/', include('authentication.urls')),
     path('payment/', include('payment.urls')),
 
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('who-are-you/i-am-the-admin/', admin.site.urls),
 
-    path('jsi18n/', i18n.JavaScriptCatalog.as_view(), name='jsi18n'),
+    # path('jsi18n/', i18n.JavaScriptCatalog.as_view(), name='jsi18n'),
 
 ] 
 
@@ -41,3 +43,8 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug_panel__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+
+admin.site.site_header = "Hotel App"
+admin.site.site_title = "Hotel App Inc. Administration"
+admin.site.index_title = "Administration"

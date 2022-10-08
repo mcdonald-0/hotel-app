@@ -17,6 +17,10 @@ class RoomTypeAdmin(admin.ModelAdmin):
     inlines = [RoomTypeImageInline]
 
 
+class RoomTypeImageAdmin(admin.ModelAdmin):
+    readonly_fields = ['image', 'thumbnail', 'room_type']
+
+
 class RoomAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Important information', {'fields': ['hotel', 'slug', 'room_type', 'room_number', 'room_information']}),
@@ -37,7 +41,7 @@ class RoomBookingAdmin(admin.ModelAdmin):
     readonly_fields = ['hotel', 'room_type', 'room_booked', 'guest', 'date_booked', 'date_to_check_in', 'date_to_check_out']
 
 
-admin.site.register(RoomTypeImage)
+admin.site.register(RoomTypeImage, RoomTypeImageAdmin)
 admin.site.register(RoomType, RoomTypeAdmin)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(RoomBooking, RoomBookingAdmin)

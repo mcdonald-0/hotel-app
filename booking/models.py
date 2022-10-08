@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.urls import reverse
 from django.template.defaultfilters import slugify
 
 from registration.models import Hotel
@@ -17,6 +18,9 @@ class RoomType(TrackingModel):
     number_of_rooms = models.IntegerField()
     number_of_booked_rooms = models.IntegerField(default=0)
     no_rooms_available = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse('booking:book_a_room', kwargs={'hotel_slug': self.hotel.slug, 'room_type_slug': self.slug})
 
     def __str__(self):
         return f'{self.name} at {self.hotel}'

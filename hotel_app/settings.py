@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 
 import dj_database_url
+import django_on_heroku
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from pathlib import Path
 
-load_dotenv()
+
+# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.environ.get('HOTEL_APP_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
@@ -43,6 +45,8 @@ AUTHENTICATION_BACKENDS = (
 # Application definition
 
 INSTALLED_APPS = [
+    'django_admin_env_notice',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +66,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'debug_toolbar',
     'django_extensions',
-    'django_admin_env_notice',
+    'admin_honeypot',
 ]
 
 PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
@@ -72,8 +76,10 @@ PHONENUMBER_DEFAULT_REGION = "NG"
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
 
 MIDDLEWARE = [
+    # Whitenoise Middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
-    # "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,8 +91,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-# WHITENOISE_MANIFEST_STRICT = False
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 INTERNAL_IPS = ['127.0.0.1']
@@ -100,11 +105,13 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                # Third party apps
+                'django_admin_env_notice.context_processors.from_settings',
+
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "django_admin_env_notice.context_processors.from_settings",
             ],
         },
     },
@@ -121,11 +128,11 @@ WSGI_APPLICATION = 'hotel_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
+        'NAME': os.environ.get("HOTEL_DB_NAME"),
+        'USER': os.environ.get("HOTEL_DB_USER"),
+        'PASSWORD': os.environ.get("HOTEL_DB_PASSWORD"),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 
 }
@@ -169,14 +176,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-
 
 STATICFILES_DIRS = [
     (BASE_DIR / 'static'),
-    # (BASE_DIR / 'media'),
+    (BASE_DIR / 'media'),
 ]
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -187,5 +194,21 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import django_on_heroku
 django_on_heroku.settings(locals())
+
+
+ENVIRONMENT_NAME = 'Development server'
+ENVIRONMENT_COLOR = '#FF2222'
+
+ENVIRONMENT_ADMIN_SELECTOR ='grp-header'
+
+ENVIRONMENT_FLOAT = True
+
+ADMINS = [('McDonald', 'mcdonaldotoyo44@proton.me')]
+
+ADMIN_HONEYPOT_EMAIL_ADMINS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+USE_THOUSAND_SEPARATOR = True
+
