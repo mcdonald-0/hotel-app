@@ -94,6 +94,16 @@
 
 {% block main %}
 
+
+	{% for message in messages %}
+		{% if message.tags == 'success' %}
+			<div class="alert alert-success alert-dismissible mx-4">
+				  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				  <strong>Success:</strong> {{ message }}
+			</div>
+		{% endif %}
+	{% endfor %}
+
 	<div id="cards_landscape_wrap-2">
 		<div class="container">
 			<div class="row">

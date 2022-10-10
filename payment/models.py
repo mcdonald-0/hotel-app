@@ -26,7 +26,7 @@ class HotelBankAccount(TrackingModel):
     def __str__(self):
         return f"{self.hotel.name} bank account"
 
-    def create_hotel_subaccount(self):
+    def create_hotel_subaccount(self, *args, **kwargs):
         bank_list = dict(BANK_LIST_WITH_CODES)
         bank_code = get_key_from_dict_value(self.bank_name, bank_list)
         self.bank_code = bank_code
@@ -46,7 +46,7 @@ class HotelBankAccount(TrackingModel):
 
 
     def save(self, *args, **kwargs):
-        create_hotel_subaccount()
+        self.create_hotel_subaccount()
         return super().save(*args, **kwargs)
 
 

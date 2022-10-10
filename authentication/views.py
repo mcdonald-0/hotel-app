@@ -1,5 +1,6 @@
 from django.conf import settings
 
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
 
@@ -17,7 +18,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from authentication.models import Guest, User
 from authentication.forms import GuestForm
-from authentication.utils import token_generator
+from authentication.utils import token_generator, send_activation_email
 
 
 def create_guest(request, *args, **kwargs):
@@ -27,43 +28,15 @@ def create_guest(request, *args, **kwargs):
         form = GuestForm(request.POST)
 
         if form.is_valid():
-            user = User.objects.get_or_create(email=form.cleaned_data['email'])
-            user[0].is_active = False
-            user[0].save()
+            user = User.objects.create_user(email=form.cleaned_data.get('email'))
 
-            # This is the email validation to make the user active
-            domain = get_current_site(request).domain
+            send_activation_email(request, user, form.cleaned_data.get('first_name'), request.POST.get('next'))
 
-            uidb64 = urlsafe_base64_encode(force_bytes(user[0].pk))
-            token = token_generator.make_token(user[0])
+            Guest.objects.create(id=user.id, user=user, **form.cleaned_data)
 
-            link = reverse('authentication:authenticate_guest', kwargs={'uidb64': uidb64, 'token': token})
-            activate_url = f'http://{domain}{link}'
-
-            mail_subject = 'Activate your account and become our Guest'
-
-            first_name = form.cleaned_data.get('first_name')
-            mail_body = f'Hello {first_name}, click this link to activate your account. {activate_url}'
-            mail_from = 'noreply@hotelapp.com'
-
-            if settings.DEBUG:
-                mail_to = ['admin@example.com']
-            else:
-                mail_to = [form.cleaned_data['email']]
-
-            mail = EmailMessage(mail_subject, mail_body, mail_from, mail_to)
-
-            mail.send()
-
-            login(request, user[0], backend='django.contrib.auth.backends.ModelBackend')
-            Guest.objects.create(id=user[0].id, user=user[0], **form.cleaned_data)
-
-            destination = request.POST.get('next')
-
-            if destination:
-                return redirect(destination)
-
-            return HttpResponse('<h1>You Created a profile</h1>')
+            messages.success(request, 'An activation link has been sent to your mail')
+            messages.info(request, 'Check your mail, click the link to continue')
+            return render(request, 'authentication/mail_sent.html', {'first_name': form.cleaned_data.get('first_name')})
 
     context = {
         'form': form,
@@ -71,5 +44,27 @@ def create_guest(request, *args, **kwargs):
 
     return render(request, 'authentication/create_guest.html', context)
 
-def authenticate_guest(request, *args, **kwargs):
-    return redirect('registration:homepage')
+
+def authenticate_guest(request, uidb64, token):
+
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except Exception as e:
+        user = None
+
+    if user is not None and token_generator.check_token(user, token):
+        user.is_email_verified = True
+        user.save()
+
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+        messages.success(request, 'Your email has been verified!')
+
+        destination = request.GET.get('next')
+        if destination:
+            return redirect(destination)
+
+        return redirect(reverse('registration:homepage'))
+
+    return render(request, 'authentication/activate_failed.html', {'user': user})

@@ -1,64 +1,76 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
-	Become our guest | Hotel app
+Become our guest | Hotel app
+{% endblock %}
+
+{% block custom_style %}
+<link href="{% static 'css/create_guest.css' %}" rel="stylesheet">
+<link href="{% static 'css/create_guest2.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
-	{% for message in messages %}
-        {% if message.tags == 'warning' %}
-            <div class="alert alert-warning alert-dismissible mx-4">
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-              <strong>Warning:</strong> {{ message }}
-        </div>
-        {% elif message.tags == 'info' %}
-            <div class="alert alert-info alert-dismissible mx-4">
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-              <strong>Information:</strong> {{ message }}
-        </div>
-        {% endif %}
-	{% endfor %}
-	<form class="mx-4" action="{% url 'authentication:create_guest' %}" method="POST">
-		{% csrf_token %}
+<div class="wrapper">
+    <form action="{% url 'authentication:create_guest' %}" class="form-signin" method="POST">
+        <h2 class="form-signin-heading text-center">Become our Guest</h2>
+
+        {% for message in messages %}
+{% if message.tags == 'warning' %}
+<div class="alert alert-warning alert-dismissible mx-4">
+    <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    <strong>Warning:</strong> {{ message }}
+</div>
+{% elif message.tags == 'info' %}
+<div class="alert alert-info alert-dismissible mx-4">
+    <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    <strong>Information:</strong> {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+        {% csrf_token %}
         <div class="form-group mt-3">
             {{ form.first_name }}
         </div>
         {% if form.errors %}
-            {{ form.errors.first_name }}
+        {{ form.errors.first_name }}
         {% endif %}
 
         <div class="form-group mt-3">
             {{ form.last_name }}
         </div>
         {% if form.errors %}
-            {{ form.errors.last_name }}
+        {{ form.errors.last_name }}
         {% endif %}
 
         <div class="form-group mt-3">
             {{ form.email }}
         </div>
         {% if form.errors %}
-            {{ form.errors.email }}
+        {{ form.errors.email }}
         {% endif %}
 
         <div class="form-group mt-3">
             {{ form.phone_number }}
         </div>
         {% if form.errors %}
-            {{ form.errors.phone_number }}
+        {{ form.errors.phone_number }}
         {% endif %}
 
         <div class="form-group mt-3">
             {{ form.next_of_kin_number }}
         </div>
         {% if form.errors %}
-            {{ form.errors.next_of_kin_number }}
+        {{ form.errors.next_of_kin_number }}
         {% endif %}
 
-        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+        <input name="next" type="hidden" value="{{ request.GET.next }}"/>
 
-		<button class="btn btn-success mt-3" type="submit">Create</button>
-	</form>
+        <button class="btn btn-success mt-3" type="submit">Create</button>
+    </form>
+</div>
 {% endblock %}
 
 

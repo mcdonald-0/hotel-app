@@ -80,7 +80,7 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
             'Unselect this instead of deleting accounts.'
         ),
     )
-    email_verified = models.BooleanField(
+    is_email_verified = models.BooleanField(
         _('email_verified'),
         default=False,
         help_text=_(
@@ -98,9 +98,6 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
-
-    def is_email_verified(self):
-        return self.email_verified
 
     def has_module_perms(self, app_label):
         return True

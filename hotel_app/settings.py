@@ -196,7 +196,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_on_heroku.settings(locals())
 
-
 ENVIRONMENT_NAME = 'Development server'
 ENVIRONMENT_COLOR = '#FF2222'
 
@@ -221,9 +220,19 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
+    
 # Debugging server email 
 # python -m smtpd -n -c DebuggingServer localhost:1025
 
-if DEBUG:
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
+# if DEBUG:
+#     EMAIL_HOST = 'localhost'
+#     EMAIL_PORT = 1025
+
+EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM_USER = 'mcdonaldotoyo44@gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 300

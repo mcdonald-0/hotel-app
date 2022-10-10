@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Hello {{ first_name }}, Check your mail | Hotel app
+{% endblock %}
+
+{% block custom_style %}
+<link href="{% static 'css/create_guest.css' %}" rel="stylesheet">
+<link href="{% static 'css/create_guest2.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+	<div class="wrapper">
+    <form class="form-signin">
+        <h2 class="form-signin-heading text-center">Verification mail sent!</h2>
+
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible mx-4">
+            <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            <strong>Success:</strong> {{ message }}
+        </div>
+        {% elif message.tags == 'info' %}
+        <div class="alert alert-info alert-dismissible mx-4">
+            <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            <strong>Info:</strong> {{ message }}
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <strong>The link would expire in five minutes!</strong>
+
+<!--		<button class="btn btn-success mt-3" type="submit">Request new mail</button>-->
+	</form>
+{% endblock %}
