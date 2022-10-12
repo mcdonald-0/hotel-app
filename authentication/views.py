@@ -58,7 +58,8 @@ def authenticate_guest(request, uidb64, token):
         user.save()
 
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-
+    
+        messages.success(request, f'Hello {request.user.guest.first_name}, Thank you for beign our guest')        
         messages.success(request, 'Your email has been verified!')
 
         destination = request.GET.get('next')

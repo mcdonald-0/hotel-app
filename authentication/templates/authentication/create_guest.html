@@ -13,7 +13,7 @@ Become our guest | Hotel app
 
 {% block main %}
 <div class="wrapper">
-    <form action="{% url 'authentication:create_guest' %}" class="form-signin" method="POST">
+    <form action="{% url 'authentication:create_guest' %}" id="create_guest_form" class="form-signin" method="POST">
         <h2 class="form-signin-heading text-center">Become our Guest</h2>
 
         {% for message in messages %}
@@ -72,5 +72,32 @@ Become our guest | Hotel app
     </form>
 </div>
 {% endblock %}
+
+{% block custom_script %}
+    
+    <script type="text/javascript">
+        // $(document).on('submit', '#create_guest_form', function(e){
+            // e.preventDefault();
+
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/create/guest/',
+            //     data: {
+            //         first_name: $('id_first_name').val(),
+            //         last_name: $('id_last_name').val(),
+            //         email: $('id_email').val(),
+            //         phone_number: $('id_phone_number').val(),
+            //         next_of_kin_number: $('id_next_of_kin_number').val(),
+            //         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            //     },
+            //     success: function () {
+
+            //     }
+            // });
+        // });
+    </script>
+
+{% endblock %}
+
 
 
