@@ -67,7 +67,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_extensions',
     'admin_honeypot',
-    # 'storages',
 ]
 
 PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
@@ -178,14 +177,14 @@ USE_TZ = True
 
 STATICFILES_DIRS = [
     (BASE_DIR / 'static'),
-    (BASE_DIR / 'media'),
+    # (BASE_DIR / 'media'),
 ]
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
@@ -239,8 +238,8 @@ PASSWORD_RESET_TIMEOUT = 300
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
 
-DROPBOX_ROOT_PATH = '/media/'
+# DROPBOX_ROOT_PATH = '/media/'
 DROPBOX_OAUTH2_TOKEN = os.environ.get('DROPBOX_OAUTH2_TOKEN')
-DROPBOX_APP_KEY = os.environ.get('DROPBOX_APP_KEY')
-DROPBOX_APP_SECRET = os.environ.get('DROPBOX_APP_SECRET')
-DROPBOX_OAUTH2_REFRESH_TOKEN = os.environ.get('DROPBOX_OAUTH2_REFRESH_TOKEN')
+# DROPBOX_APP_KEY = os.environ.get('DROPBOX_APP_KEY')
+# DROPBOX_APP_SECRET = os.environ.get('DROPBOX_APP_SECRET')
+# DROPBOX_OAUTH2_REFRESH_TOKEN = os.environ.get('DROPBOX_OAUTH2_REFRESH_TOKEN')

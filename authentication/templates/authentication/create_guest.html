@@ -13,51 +13,47 @@ Become our guest | Hotel app
 
 {% block main %}
 <div class="wrapper">
-    <form action="{% url 'authentication:create_guest' %}" id="create_guest_form" class="form-signin" method="POST">
+    <form action="{% url 'authentication:create_guest' %}" class="form-signin" id="create_guest_form" method="POST">
         <h2 class="form-signin-heading text-center">Become our Guest</h2>
 
         {% for message in messages %}
-{% if message.tags == 'warning' %}
-<div class="alert alert-warning alert-dismissible mx-4">
-    <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
-    <strong>Warning:</strong> {{ message }}
-</div>
-{% elif message.tags == 'info' %}
-<div class="alert alert-info alert-dismissible mx-4">
-    <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
-    <strong>Information:</strong> {{ message }}
-</div>
-{% endif %}
-{% endfor %}
+        {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible mx-4">
+            <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            <strong>Warning:</strong> {{ message }}
+        </div>
+        {% elif message.tags == 'info' %}
+        <div class="alert alert-info alert-dismissible mx-4">
+            <button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+            <strong>Information:</strong> {{ message }}
+        </div>
+        {% endif %}
+        {% endfor %}
 
         {% csrf_token %}
         <div class="form-group mt-3">
             {{ form.first_name }}
         </div>
-        {% if form.errors %}
-        {{ form.errors.first_name }}
-        {% endif %}
+        <div class="invalid-feedback invalid-feedback-fn" style="display: none;">
+        </div>
 
         <div class="form-group mt-3">
             {{ form.last_name }}
         </div>
-        {% if form.errors %}
-        {{ form.errors.last_name }}
-        {% endif %}
+        <div class="invalid-feedback invalid-feedback-ln" style="display: none;">
+        </div>
 
         <div class="form-group mt-3">
             {{ form.email }}
         </div>
-        {% if form.errors %}
-        {{ form.errors.email }}
-        {% endif %}
+        <div class="invalid-feedback invalid-feedback-em" style="display: none;">
+        </div>
 
         <div class="form-group mt-3">
             {{ form.phone_number }}
         </div>
-        {% if form.errors %}
-        {{ form.errors.phone_number }}
-        {% endif %}
+         <div class="invalid-feedback invalid-feedback-ph" style="display: none;">
+        </div>
 
         <div class="form-group mt-3">
             {{ form.next_of_kin_number }}
@@ -74,29 +70,7 @@ Become our guest | Hotel app
 {% endblock %}
 
 {% block custom_script %}
-    
-    <script type="text/javascript">
-        // $(document).on('submit', '#create_guest_form', function(e){
-            // e.preventDefault();
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: '/create/guest/',
-            //     data: {
-            //         first_name: $('id_first_name').val(),
-            //         last_name: $('id_last_name').val(),
-            //         email: $('id_email').val(),
-            //         phone_number: $('id_phone_number').val(),
-            //         next_of_kin_number: $('id_next_of_kin_number').val(),
-            //         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            //     },
-            //     success: function () {
-
-            //     }
-            // });
-        // });
-    </script>
-
+<script src="{% static 'js/create_guest.js' %}"></script>
 {% endblock %}
 
 
